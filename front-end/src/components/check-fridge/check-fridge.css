@@ -1,0 +1,64 @@
+.button-fridge{
+    height: 3rem;
+    width: 10rem;
+    font-size: 0.9rem;
+    border-radius: 5px;
+    margin-top: 9rem;
+    z-index: 999;
+    text-align: center
+}
+
+.container-recipe{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2rem  
+}
+
+.form-control{
+  text-align: center;
+  width:100%;
+}
+
+.container-recipe{
+    padding: 2rem
+}
+
+.container-form-recipe{
+    opacity:0.7
+}
+
+.list-ingredients{
+    list-style-type: circle;
+    color: black
+}
+
+.fridge-insisde{
+    padding:2rem;
+}
+
+.fridge-title{
+    text-decoration: none;
+    color: grey
+}
+
+.instruction-headline{
+    color: grey;
+    text-decoration: none;
+}
+
+.instruction-textarea{
+    padding: 2rem;
+    text-align: center
+}
+
+.fridge-cart-inside{
+    margin-top: 2rem
+}
+
+@media screen and (max-width: 600px) {
+    .list-ingredients{
+        background-color: white;
+        border-color: white
+    }
+}

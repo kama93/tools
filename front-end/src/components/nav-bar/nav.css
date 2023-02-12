@@ -1,0 +1,16 @@
+.logo{
+    height: 5rem;
+}
+
+.nav-possition{
+    position: absolute;
+}
+
+@media only screen and (max-width: 600px) {
+    .nav-titles{
+        color: white;
+    }
+    ul{
+        background-color:rgba(0, 0, 0, 0.8)
+    }
+}
