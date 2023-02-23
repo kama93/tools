@@ -16,8 +16,8 @@ const db = knex({
     client: 'pg',
     connection: {
         host : process.env.DB_HOST || '127.0.0.1',
-        user : process.env.DB_USER || '',
-        password : process.env.DB_PASSWORD || '',
+        user : process.env.DB_USER || 'postgres',
+        password : process.env.DB_PASSWORD || 'test123',
         database : process.env.DB_NAME || 'fit'
     }
 });
@@ -107,7 +107,7 @@ app.post('/api/signin', (req, res) => {
             .then(trx.commit)
             .catch(trx.rollback)
     })
-        .catch(err => res.status(400).json('fetch issue with registration'))
+        // .catch(err => res.status(400).json('fetch issue with registration'))
 });
 
 // put BMI in database

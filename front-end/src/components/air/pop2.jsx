@@ -11,7 +11,6 @@ function Pops() {
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(function (position) {
-      console.log('bla')
       setLat(position.coords.latitude);
       setLng(position.coords.longitude);
     });

@@ -43,6 +43,7 @@ function Login({ setCurrentUser }) {
     })
       .then(response => response.json())
       .then(user => {
+        console.log(user)
         if (user.id) {
           setCurrentUser(user);
           history.push('/')

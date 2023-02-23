@@ -9,6 +9,7 @@ import WeeklyDiet from "./components/weekly-diet/weekly.diet.jsx";
 import DinerWine from "./components/diner-wine/diner-wine.jsx";
 import Tracking from "./components/tracking/tracking.jsx";
 import Fridge from "./components/check-fridge/check-fridge.jsx";
+import Main from "./views/main"
 
 import './App.css';
 
@@ -16,6 +17,7 @@ function App() {
   return (
     <Switch>
       <Route path="/login" component={Login} />
+      <Route path="/main" component={Main} />
       <Route path="/register" component={Register} />
       <Route path="/diet" component={WeeklyDiet} />
       <Route path="/fridge" component={Fridge} />
