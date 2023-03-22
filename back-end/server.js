@@ -307,6 +307,15 @@ app.get('/api/joke', (req, res) => {
         .catch(err => { console.log(err); res.status(400).json('joke issue') })
 })
 
+// get meal plan from food API
+app.get('/api/quotes', (req, res) => {
+    const url = 'https://api.api-ninjas.com/v1/quotes?category=dreams'
+    fetch(url, {headers: {'X-Api-Key': 'Nb4iQ+uZQjerlCDJbrJOyQ==2djcYdO2DVFolkAA'}})
+        .then(result => result.json())
+        .then(result => res.status(200).json(result))
+        .catch(err => { console.log(err); res.status(400).json('joke issue') })
+})
+
 // put weight in database
 app.put('/api/weight', (req, res) => {
     const { email, weight } = req.body;

@@ -1,19 +1,53 @@
 import React, {useEffect, useState} from "react";
+import Form from 'react-bootstrap/Form';
 
 import './main.css';
 
 function Main() {
-    const [joke, setJoke] = useState();
+    const [text, setText] = useState();
+    const [isSwitchOn, setIsSwitchOn] = useState(true);
 
-    useEffect(() => {
-        console.log('bla')
+    const checkJoke = () => {
         fetch('/api/joke', {
+        method: 'get',
+            headers: { 'Content-Type': 'application/json'}
+    })
+        .then(response => response.json())
+        .then(response => {setText(response[0].joke)})
+    }
+
+    const checkQuotes = () => {
+        fetch('/api/quotes', {
             method: 'get',
             headers: { 'Content-Type': 'application/json'}
         })
             .then(response => response.json())
-            .then(response => {setJoke(response[0].joke)})
+            .then(response => {setText(response[0].quote)})
+    }
+
+    const onSwitchAction = () => {
+        isSwitchOn ? checkJoke() : checkQuotes();
+
+        setIsSwitchOn(!isSwitchOn);
+    };
+
+    useEffect(() => {
+        checkJoke();
     },[])
+
+    useEffect(() => {
+        let nodes = document.querySelectorAll(".header");
+        for(let i= 0; i < nodes.length; i++) {
+            let words = nodes[i].innerText;
+            let html = "";
+
+            for (let j = 0; j < words.length; j++) {
+                if (words[j] == " ") html += words[j];
+                else html += "<span>" + words[j] + "</span>"
+            }
+            nodes[i].innerHTML = html;
+        }
+    }, [text]);
 
 
     return (
@@ -29,6 +63,14 @@ function Main() {
                             backgroundRepeat: "no-repeat"
                         }}
                     ></div>
+                    <Form>
+                        <Form.Check
+                            type="switch"
+                            id="custom-switch"
+                            onChange={onSwitchAction}
+                            checked={isSwitchOn}
+                        />
+                    </Form>
                     <div className="container">
 
                         <div className="bird-container bird-container--one">
@@ -46,7 +88,11 @@ function Main() {
                         <div className="bird-container bird-container--four">
                             <div className="bird bird--four"></div>
                         </div>
-
+                        <div className="header-container">
+                            <h2 className="header">
+                                {text}
+                            </h2>
+                        </div>
                     </div>
                     <div className="menu-container absolute">
                         <div className="image-container"

@@ -11,6 +11,11 @@ section {
     height: 100vh
 }
 
+.switch {
+    margin-left: 5rem;
+    margin-top: 5rem;
+}
+
 .container {
     z-index: 1;
     position: relative;
@@ -24,6 +29,38 @@ section {
     background-position: center center;
     padding: 2rem;
 }
+
+.header-container {
+    font-family: Helvetica, sans-serif;
+    color: #fff;
+    padding: 1em;
+    min-height: 50vh;
+    margin: 0 auto 0 auto;
+}
+
+.header {
+    opacity: 0;
+    top: 0.6em;
+    font-family: 'Delicious Handrawn', cursive;
+    font-size: 4rem;
+    animation: animateOverlay 0.5s ease-in-out forwards;
+}
+
+.header:nth-child(4n) { animation-delay: 0s; }
+.header:nth-child(4n+1) { animation-delay: 1s; }
+.header:nth-child(4n+3) { animation-delay: 2s; }
+.header:nth-child(4n+2) { animation-delay: 3s; }
+
+span {
+    opacity: 0;
+    top: 1em;
+    animation: animateOverlay 1s ease-in-out forwards;
+}
+
+span:nth-child(4n) { animation-delay: 0s; }
+span:nth-child(4n+1) { animation-delay: 1s; }
+span:nth-child(4n+3) { animation-delay: 2s; }
+span:nth-child(4n+2) { animation-delay: 3s; }
 
 .bird {
     background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/174479/bird-cells-new.svg);
@@ -116,6 +153,13 @@ section {
     rotate: 90deg;
     opacity: 1;
     margin-top: 8rem;
+}
+
+@keyframes animateOverlay {
+    to {
+        opacity: 1;
+        top: 0;
+    }
 }
 
 @keyframes fly-cycle {
