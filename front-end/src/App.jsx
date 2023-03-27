@@ -11,6 +11,7 @@ import DinerWine from "./components/diner-wine/diner-wine.jsx";
 import Tracking from "./components/tracking/tracking.jsx";
 import Fridge from "./components/check-fridge/check-fridge.jsx";
 import Main from "./views/main"
+import Calendar from "./components/personal/calendar/index";
 
 import './App.css';
 
@@ -25,6 +26,7 @@ function App() {
       <Route path="/diner" component={DinerWine} />
       <Route path="/tracking" component={Tracking} />
       <Route path="/landing" component={Landing} />
+      <Route path="/calendar" component={Calendar} />
       <Redirect from="/" to="/landing" />
     </Switch>
   );

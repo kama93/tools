@@ -5,7 +5,8 @@ import './main.css';
 
 function Main() {
     const [text, setText] = useState();
-    const [isSwitchOn, setIsSwitchOn] = useState(true);
+    const [joke, setJoke] = useState(true);
+    const [quote, setQuote] = useState(false);
 
     const checkJoke = () => {
         fetch('/api/joke', {
@@ -14,6 +15,9 @@ function Main() {
     })
         .then(response => response.json())
         .then(response => {setText(response[0].joke)})
+
+        setJoke(!joke);
+        setQuote(!quote);
     }
 
     const checkQuotes = () => {
@@ -23,13 +27,10 @@ function Main() {
         })
             .then(response => response.json())
             .then(response => {setText(response[0].quote)})
+
+        setJoke(!joke);
+        setQuote(!quote);
     }
-
-    const onSwitchAction = () => {
-        isSwitchOn ? checkJoke() : checkQuotes();
-
-        setIsSwitchOn(!isSwitchOn);
-    };
 
     useEffect(() => {
         checkJoke();
@@ -63,14 +64,10 @@ function Main() {
                             backgroundRepeat: "no-repeat"
                         }}
                     ></div>
-                    <Form>
-                        <Form.Check
-                            type="switch"
-                            id="custom-switch"
-                            onChange={onSwitchAction}
-                            checked={isSwitchOn}
-                        />
-                    </Form>
+                    <div className="buttons-container">
+                        <button className="button-86" role="button" onClick={checkJoke}>Joke</button>
+                        <button className="button-86" role="button" onClick={checkQuotes}>Quote</button>
+                    </div>
                     <div className="container">
 
                         <div className="bird-container bird-container--one">
@@ -81,17 +78,18 @@ function Main() {
                             <div className="bird bird--two"></div>
                         </div>
 
+                        <div className="header-container">
+                            <h2 className="header">
+                                {text}
+                            </h2>
+                        </div>
+
                         <div className="bird-container bird-container--three">
                             <div className="bird bird--three"></div>
                         </div>
 
                         <div className="bird-container bird-container--four">
                             <div className="bird bird--four"></div>
-                        </div>
-                        <div className="header-container">
-                            <h2 className="header">
-                                {text}
-                            </h2>
                         </div>
                     </div>
                     <div className="menu-container absolute">
