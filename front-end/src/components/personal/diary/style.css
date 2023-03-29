@@ -1,0 +1,25 @@
+.col-sm-9 {
+    height: 100vh;
+    opacity: 0.6;
+}
+
+.dairy-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.text-diary{
+    height: 50vh;
+    border-radius: 25px;
+    font-family: 'Delicious Handrawn', cursive;
+    font-size: 1.5em;
+    opacity: 0.6;
+}
+
+::placeholder{
+    font-family: 'Delicious Handrawn', cursive;
+    font-size: 2em;
+    color: white;
+    padding: 1rem;
+}
