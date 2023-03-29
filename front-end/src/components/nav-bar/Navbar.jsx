@@ -1,8 +1,6 @@
 import React from "react";
 import AOS from 'aos'
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { setCurrentUser } from '../../redux/actions';
 
 import './nav.css'
 
@@ -214,11 +212,4 @@ function Navbar(props) {
   );
 }
 
-const mapStateToProps = state => ({
-  currentUser: state.user.currentUser
-});
-const mapDispatchToProps = dispatch => ({
-  setCurrentUser: user => dispatch(setCurrentUser(user))
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(Navbar);
+export default Navbar;

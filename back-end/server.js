@@ -373,4 +373,16 @@ app.get('/api/air/:lat/:lng', (req, res) => {
 const port = process.env.PORT || 3003
 app.listen(port, () => {
     console.log(`app is running on port ${port}`)
-}) 
+})
+
+
+app.post('/api/joker', (req,res)=>{
+    const {id}= req.body;
+    const baseURL = 'https://api.themoviedb.org/3/';
+    let url = ''.concat(baseURL, 'movie/', id,'?api_key=', 'd82064dd42e2d3724450471d27b7a55c');
+    fetch(url)
+        .then(result=>result.json())
+        .then(result => res.status(200).json(result))
+        .then(data=>console.log(data))
+        .catch(err=> res.status(400).json('fetch movie issue'))
+})

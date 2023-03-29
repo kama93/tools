@@ -1,0 +1,12 @@
+.card-img-top {
+    height: 40vh;
+    width: 30vh;
+}
+
+.card{
+    align-items: center;
+}
+
+.card-body {
+    text-align: center;
+}

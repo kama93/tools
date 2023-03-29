@@ -6,10 +6,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Landing from "./views/landing-page/Lading.jsx";
 import Login from "./views/Login.jsx";
 import Register from "./views/registration.jsx";
-import WeeklyDiet from "./components/weekly-diet/weekly.diet.jsx";
-import DinerWine from "./components/diner-wine/diner-wine.jsx";
-import Tracking from "./components/tracking/tracking.jsx";
-import Fridge from "./components/check-fridge/check-fridge.jsx";
 import Main from "./views/main"
 import Calendar from "./components/personal/calendar/index";
 
@@ -21,13 +17,9 @@ function App() {
       <Route path="/login" component={Login} />
       <Route path="/main" component={Main} />
       <Route path="/register" component={Register} />
-      <Route path="/diet" component={WeeklyDiet} />
-      <Route path="/fridge" component={Fridge} />
-      <Route path="/diner" component={DinerWine} />
-      <Route path="/tracking" component={Tracking} />
       <Route path="/landing" component={Landing} />
       <Route path="/calendar" component={Calendar} />
-      <Redirect from="/" to="/landing" />
+      <Redirect from="/" to="/main" />
     </Switch>
   );
 }

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import Form from 'react-bootstrap/Form';
+import { Link } from 'react-router-dom';
 
 import './main.css';
 
@@ -101,14 +101,16 @@ function Main() {
                                  backgroundRepeat: "no-repeat"}}>
                             <p className="image-text">News</p>
                         </div>
-                        <div className="image-container"
-                             style={{
-                                 backgroundImage:
-                                     "url(https://images.unsplash.com/photo-1579017308347-e53e0d2fc5e9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80)",
-                                 backgroundSize: "100%",
-                                 backgroundRepeat: "no-repeat"}}>
-                            <p className="image-text">Diary</p>
-                        </div>
+                            <div className="image-container"
+                                 style={{
+                                     backgroundImage:
+                                         "url(https://images.unsplash.com/photo-1579017308347-e53e0d2fc5e9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80)",
+                                     backgroundSize: "100%",
+                                     backgroundRepeat: "no-repeat"}}>
+                                <Link to='./calendar'>
+                                    <p className="image-text">Diary</p>
+                                </Link>
+                            </div>
                         <div className="image-container"
                              style={{
                                  backgroundImage:

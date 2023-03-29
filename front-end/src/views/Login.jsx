@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { setCurrentUser } from '../redux/actions';
 
 function Login({ setCurrentUser }) {
   let [signInEmail, setSignInEmail] = useState('');
@@ -147,8 +145,4 @@ function Login({ setCurrentUser }) {
   );
 }
 
-const mapDispatchToProps = dispatch => ({
-  setCurrentUser: user => dispatch(setCurrentUser(user))
-})
-
-export default connect(null, mapDispatchToProps)(Login);
+export default Login;

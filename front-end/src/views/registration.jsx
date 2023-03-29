@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import { setCurrentUser } from '../redux/actions';
-import { setUserCpm } from '../redux/actions-cpm';
-import { connect } from 'react-redux';
 
 function Register({ setCurrentUser, setUserCpm }) {
   const [signUpEmail, setSignUpEmail] = useState('');
@@ -22,11 +19,6 @@ function Register({ setCurrentUser, setUserCpm }) {
   const onPasswordChange = (event) => {
     setSignUpPassword(event.target.value)
   }
-
-  //   const  onChangeCheckbox = event => {
-  //    setIsChecked(event.target.value)
-  //    loginSubmit()
-  // }
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
@@ -156,11 +148,4 @@ function Register({ setCurrentUser, setUserCpm }) {
   );
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    setCurrentUser: user => dispatch(setCurrentUser(user)),
-    setUserCpm: cpm => dispatch(setUserCpm(cpm))
-  }
-}
-
-export default connect(null, mapDispatchToProps)(Register);
+export default Register;

@@ -1,12 +1,6 @@
 import React from 'react';
 
-import Gif from '../../components/gif/gif'
 import Navbar from '../../components/nav-bar/Navbar.jsx';
-import Footer from '../../components/footer/Footer.jsx';
-import Popups from '../../components/bmi/pop';
-import Pop from '../../components/kcal/pop1';
-import Pops from '../../components/air/pop2';
-import Email from '../../components/email-form/email';
 
 import './lading.css'
 
@@ -60,12 +54,8 @@ function Landing() {
           </div>
         </div>
         <section className="pb-20 bg-gray-300 -mt-24">
-          <Gif />
           <div className="container mx-auto px-4">
             <div className="flex flex-wrap">
-              <Popups />
-              <Pop />
-              <Pops />
             </div>
             <div className="flex flex-wrap items-center mt-32">
               <div className="w-full md:w-5/12 px-4 mr-auto ml-auto" data-aos="zoom-in-right">
@@ -400,10 +390,8 @@ function Landing() {
           </div>
         </section>
         <section className="relative block py-24 lg:pt-0 bg-gray-900">
-          <Email />
         </section>
       </main>
-      <Footer />
     </>
   );
 }
