@@ -375,7 +375,6 @@ app.listen(port, () => {
     console.log(`app is running on port ${port}`)
 })
 
-
 app.post('/api/joker', (req,res)=>{
     const {id}= req.body;
     const baseURL = 'https://api.themoviedb.org/3/';
@@ -385,4 +384,12 @@ app.post('/api/joker', (req,res)=>{
         .then(result => res.status(200).json(result))
         .then(data=>console.log(data))
         .catch(err=> res.status(400).json('fetch movie issue'))
+})
+
+app.get('/api/bucket', (req, res) => {
+    const url = 'https://api.api-ninjas.com/v1/bucketlist'
+    fetch(url, {headers: {'X-Api-Key': 'Nb4iQ+uZQjerlCDJbrJOyQ==2djcYdO2DVFolkAA'}})
+        .then(result => result.json())
+        .then(result => res.status(200).json(result))
+        .catch(err => { console.log(err); res.status(400).json('joke issue') })
 })

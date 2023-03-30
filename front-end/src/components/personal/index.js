@@ -8,6 +8,7 @@ import Tab from 'react-bootstrap/Tab';
 import Diary from './diary';
 import Movie from './movie';
 import Calendar from './calendar';
+import List from './list';
 
 function Personal () {
 
@@ -23,7 +24,7 @@ function Personal () {
                             <Nav.Link eventKey="second">Diary</Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
-                            <Nav.Link eventKey="third">Book List</Nav.Link>
+                            <Nav.Link eventKey="third">Bucket List</Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
                             <Nav.Link eventKey="fourth">Get random movie</Nav.Link>
@@ -39,6 +40,7 @@ function Personal () {
                             <Diary/>
                         </Tab.Pane>
                         <Tab.Pane eventKey="third">
+                            <List/>
                         </Tab.Pane>
                         <Tab.Pane eventKey="fourth">
                             <Movie/>
