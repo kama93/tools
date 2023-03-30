@@ -7,7 +7,7 @@ import Landing from "./views/landing-page/Lading.jsx";
 import Login from "./views/Login.jsx";
 import Register from "./views/registration.jsx";
 import Main from "./views/main"
-import Calendar from "./components/personal/calendar/index";
+import Personal from "./components/personal/index";
 
 import './App.css';
 
@@ -18,7 +18,7 @@ function App() {
       <Route path="/main" component={Main} />
       <Route path="/register" component={Register} />
       <Route path="/landing" component={Landing} />
-      <Route path="/calendar" component={Calendar} />
+      <Route path="/calendar" component={Personal} />
       <Redirect from="/" to="/main" />
     </Switch>
   );

@@ -108,7 +108,7 @@ function Main() {
                                      backgroundSize: "100%",
                                      backgroundRepeat: "no-repeat"}}>
                                 <Link to='./calendar'>
-                                    <p className="image-text">Diary</p>
+                                    <p className="image-text">Personal</p>
                                 </Link>
                             </div>
                         <div className="image-container"

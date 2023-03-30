@@ -1,51 +1,41 @@
-import React, { useState } from 'react';
+import React, {useEffect} from 'react';
 
-import Col from 'react-bootstrap/Col';
-import Nav from 'react-bootstrap/Nav';
-import Row from 'react-bootstrap/Row';
-import Tab from 'react-bootstrap/Tab';
+import dayjs from 'dayjs';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 
-import Diary from '../diary';
-import Movie from '../movie';
+import './style.css';
 
 function Calendar () {
+    const [value, setValue] = React.useState(dayjs(new Date().toJSON().slice(0, 10)));
+
+    useEffect(() => {
+
+        console.log(value)
+    }, [value])
 
     return (
-        <Tab.Container id="left-tabs-example" defaultActiveKey="first">
-            <Row>
-                <Col sm={2}>
-                    <Nav variant="pills" className="flex-column">
-                        <Nav.Item>
-                            <Nav.Link eventKey="first">Calendar</Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                            <Nav.Link eventKey="second">Diary</Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                            <Nav.Link eventKey="third">Book List</Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                            <Nav.Link eventKey="fourth">Get random movie</Nav.Link>
-                        </Nav.Item>
-                    </Nav>
-                </Col>
-                <Col sm={9}>
-                    <Tab.Content>
-                        <Tab.Pane eventKey="first">
-                        </Tab.Pane>
-                        <Tab.Pane eventKey="second">
-                            <Diary/>
-                        </Tab.Pane>
-                        <Tab.Pane eventKey="third">
-                        </Tab.Pane>
-                        <Tab.Pane eventKey="fourth">
-                            <Movie/>
-                        </Tab.Pane>
-                    </Tab.Content>
-                </Col>
-            </Row>
-        </Tab.Container>
+        <div
+            className="dairy-container absolute top-0 w-full h-full bg-gray-900"
+            style={{
+                backgroundImage:
+                    "url(https://images.unsplash.com/photo-1616198814651-e71f960c3180?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80)",
+                backgroundSize: "100%",
+                backgroundRepeat: "no-repeat"
+            }}>
 
+            <div className="data-container">
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DateCalendar
+                        value={value}
+                        onChange={(newValue) => setValue(newValue)}
+                        dayOfWeekFormatter={(day) => `${day}.`}
+                        slotProps={{ textField: { fullWidth: true } }}
+                    />
+                </LocalizationProvider>
+            </div>
+        </div>
     )
 }
 
