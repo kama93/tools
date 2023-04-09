@@ -17,7 +17,7 @@
     opacity: 0.6;
 }
 
-::placeholder{
+.text-diary ::placeholder{
     font-family: 'Delicious Handrawn', cursive;
     font-size: 2em;
     color: white;

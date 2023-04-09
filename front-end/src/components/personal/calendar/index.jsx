@@ -1,18 +1,39 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import dayjs from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import Form from 'react-bootstrap/Form';
 
 import './style.css';
 
 function Calendar () {
     const [value, setValue] = React.useState(dayjs(new Date().toJSON().slice(0, 10)));
+    const [show, setShow] = useState(false);
+    const [event, setEvent] = useState('');
+
+    const handleClose = () => setShow(false);
+    const updateEvent = (e) => setEvent(e.target.value);
+    const updateCalendar = () => {
+        fetch('/api/calendar', {
+            method: 'put',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                email: "k@f.com",
+                date: value.format("YYYY-MM-DD"),
+                info: event
+            })
+        })
+            .then(response => response.json())
+            .then(response => console.log(response))
+    };
 
     useEffect(() => {
-
-        console.log(value)
+        setShow(true)
+        setValue(value);
     }, [value])
 
     return (
@@ -27,14 +48,34 @@ function Calendar () {
 
             <div className="data-container">
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    {/*<DateCalendar*/}
-                    {/*    value={value}*/}
-                    {/*    onChange={(newValue) => setValue(newValue)}*/}
-                    {/*    dayOfWeekFormatter={(day) => `${day}.`}*/}
-                    {/*    slotProps={{ textField: { fullWidth: true } }}*/}
-                    {/*/>*/}
+                    <DateCalendar
+                        value={value}
+                        onChange={(newValue) => setValue(newValue)}
+                        dayOfWeekFormatter={(day) => `${day}.`}
+                        slotProps={{ textField: { fullWidth: true } }}
+                    />
                 </LocalizationProvider>
             </div>
+
+            <Modal
+                show={show}
+                onHide={handleClose}
+                backdrop="static"
+                keyboard={false}
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title>{value.format("YYYY-MM-DD")}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    I will not close if you click outside me. Don't even try to press
+                    escape key.s
+                </Modal.Body>
+                <Form.Control className="input-event" size="sm" type="text" placeholder="Event" onChange={updateEvent}/>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>Close</Button>
+                    <Button variant="primary" onClick={updateCalendar}>Add</Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     )
 }

@@ -18,10 +18,8 @@ function Movie () {
         })
             .then(response => response.json())
             .then(response => {
-                console.log(response)
                 setImage(response.poster_path && response.poster_path.length > 0 ?'https://image.tmdb.org/t/p/w500' + response.poster_path : "")
                 setData(response)
-                console.log(response)
             })
     },[])
 

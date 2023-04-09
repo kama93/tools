@@ -3,3 +3,8 @@
     opacity: 0.9;
     border-radius: 5px;
 }
+
+.input-event{
+    margin: 0.2rem;
+    width: 98%;
+}

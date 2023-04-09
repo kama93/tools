@@ -153,6 +153,21 @@ app.get('/api/bmi/:email', (req, res) => {
 )
 
 // put calories in database
+app.put('/api/calendar', (req, res) => {
+    const { email, date,  info} = req.body;
+    db.from('calendar')
+        .then(db_res => {
+            db('calendar').insert({
+                email: email,
+                save_date: date,
+                information: info
+            })
+                .then(result => res.status(200).json('Event added'))
+                .catch(err => res.status(400).json('issue with adding event'))
+        })
+})
+
+// put calories in database
 app.put('/api/calories', (req, res) => {
     const { email, ppm, cpm } = req.body;
     checkTokenAccess(req, res, email)
