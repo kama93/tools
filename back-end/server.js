@@ -168,6 +168,30 @@ app.put('/api/calendar', (req, res) => {
 })
 
 // put calories in database
+app.put('/api/deleteEvent', (req, res) => {
+    const { email,  id} = req.body;
+    db.from('calendar')
+        .where('email', '=', email)
+        .where('id', '=', id)
+        .del()
+        .then(result => res.status(200).json('Event removed'))
+        .catch(err => res.status(400).json('issue with removing event'))
+})
+
+app.get('/api/getCalendar/:email/:date', (req, res) => {
+        const { email, date } = req.params;
+        db.select('information', 'id')
+            .from('calendar')
+            .where('email', '=', email)
+            .where('save_date', '=', date)
+            .then(user => res.status(200).json(user))
+            .catch(err => {
+                res.status(400).json('error getting bmi')
+            })
+    }
+)
+
+// put calories in database
 app.put('/api/calories', (req, res) => {
     const { email, ppm, cpm } = req.body;
     checkTokenAccess(req, res, email)

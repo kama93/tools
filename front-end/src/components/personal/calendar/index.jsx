@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 
 import dayjs from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -7,16 +7,35 @@ import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
+import ListGroup from 'react-bootstrap/ListGroup';
 
 import './style.css';
 
 function Calendar () {
     const [value, setValue] = React.useState(dayjs(new Date().toJSON().slice(0, 10)));
     const [show, setShow] = useState(false);
+    const [isChange, setIsChange] = useState(false);
     const [event, setEvent] = useState('');
+    const [currentEvents, setCurrentEvents] = useState({});
+
+    const inputRef = useRef(null);
 
     const handleClose = () => setShow(false);
-    const updateEvent = (e) => setEvent(e.target.value);
+    const updateEvent = (e) => {
+        setEvent(e.target.value);
+    }
+
+    const getCalendar = () => {
+        fetch('/api/getCalendar/' + "k@f.com/" + value.format("YYYY-MM-DD"), {
+            method: 'get',
+            headers: { 'Content-Type': 'application/json' }
+        })
+            .then(response => response.json())
+            .then(response => {
+                setCurrentEvents(response)
+            })
+    };
+
     const updateCalendar = () => {
         fetch('/api/calendar', {
             method: 'put',
@@ -27,14 +46,35 @@ function Calendar () {
                 info: event
             })
         })
+
+        inputRef.current.value = "";
+        setIsChange(!isChange);
+    };
+
+    const removeEvent = (e) => {
+        fetch('/api/deleteEvent', {
+            method: 'put',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                email: "k@f.com",
+                id: e.target.id,
+            })
+        })
             .then(response => response.json())
             .then(response => console.log(response))
+
+        setIsChange(!isChange);
+    }
+
+    const getDate = (e) => {
+        setValue(e);
+        setShow(true)
+
     };
 
     useEffect(() => {
-        setShow(true)
-        setValue(value);
-    }, [value])
+        getCalendar();
+    }, [isChange, value])
 
     return (
         <div
@@ -50,7 +90,7 @@ function Calendar () {
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DateCalendar
                         value={value}
-                        onChange={(newValue) => setValue(newValue)}
+                        onChange={getDate}
                         dayOfWeekFormatter={(day) => `${day}.`}
                         slotProps={{ textField: { fullWidth: true } }}
                     />
@@ -67,10 +107,13 @@ function Calendar () {
                     <Modal.Title>{value.format("YYYY-MM-DD")}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    I will not close if you click outside me. Don't even try to press
-                    escape key.s
+                    {currentEvents.length > 0 && currentEvents.map((item) =>
+                    <ListGroup.Item key={item.id} id = {item.id} action onClick={removeEvent}>
+                        {item.information}
+                    </ListGroup.Item>
+                    )}
                 </Modal.Body>
-                <Form.Control className="input-event" size="sm" type="text" placeholder="Event" onChange={updateEvent}/>
+                <Form.Control className="input-event" size="sm" type="text" placeholder="Event" ref={inputRef} onChange={updateEvent}/>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>Close</Button>
                     <Button variant="primary" onClick={updateCalendar}>Add</Button>
