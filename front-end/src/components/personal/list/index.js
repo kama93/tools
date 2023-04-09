@@ -29,7 +29,7 @@ function List () {
                 backgroundRepeat: "no-repeat"
             }}>
 
-            <ListGroup as="ol" numbered>
+            <ListGroup as="ol">
                 {list?.item && <ListGroup.Item as="li">{list.item}</ListGroup.Item>}
             </ListGroup>
 

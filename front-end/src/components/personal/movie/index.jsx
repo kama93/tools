@@ -18,7 +18,8 @@ function Movie () {
         })
             .then(response => response.json())
             .then(response => {
-                setImage('https://image.tmdb.org/t/p/w500' + response.poster_path)
+                console.log(response)
+                setImage(response.poster_path && response.poster_path.length > 0 ?'https://image.tmdb.org/t/p/w500' + response.poster_path : "")
                 setData(response)
                 console.log(response)
             })
@@ -36,7 +37,7 @@ function Movie () {
         >
 
             {data && <Card style={{ width: '70vw' }}>
-                <Card.Img variant="top" src={image}/>
+                { image.length > 0 && <Card.Img variant="top" src={image}/>}
                 <Card.Body>
                     <Card.Title>{data.original_title}</Card.Title>
 

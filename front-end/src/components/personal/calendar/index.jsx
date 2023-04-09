@@ -27,12 +27,12 @@ function Calendar () {
 
             <div className="data-container">
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DateCalendar
-                        value={value}
-                        onChange={(newValue) => setValue(newValue)}
-                        dayOfWeekFormatter={(day) => `${day}.`}
-                        slotProps={{ textField: { fullWidth: true } }}
-                    />
+                    {/*<DateCalendar*/}
+                    {/*    value={value}*/}
+                    {/*    onChange={(newValue) => setValue(newValue)}*/}
+                    {/*    dayOfWeekFormatter={(day) => `${day}.`}*/}
+                    {/*    slotProps={{ textField: { fullWidth: true } }}*/}
+                    {/*/>*/}
                 </LocalizationProvider>
             </div>
         </div>
