@@ -21,9 +21,7 @@ function Calendar () {
     const inputRef = useRef(null);
 
     const handleClose = () => setShow(false);
-    const updateEvent = (e) => {
-        setEvent(e.target.value);
-    }
+    const updateEvent = (e) => setEvent(e.target.value);
 
     const getCalendar = () => {
         fetch('/api/getCalendar/' + "k@f.com/" + value.format("YYYY-MM-DD"), {

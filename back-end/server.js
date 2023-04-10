@@ -178,6 +178,20 @@ app.put('/api/deleteEvent', (req, res) => {
         .catch(err => res.status(400).json('issue with removing event'))
 })
 
+// put calories in database
+app.put('/api/diary', (req, res) => {
+    const { email,  text} = req.body;
+    db.from('diary')
+        .then(db_res => {
+            db('diary').insert({
+                email: email,
+                add_text: text
+            })
+                .then(result => res.status(200).json('Diary added'))
+                .catch(err => res.status(400).json('issue with adding diary'))
+        })
+})
+
 app.get('/api/getCalendar/:email/:date', (req, res) => {
         const { email, date } = req.params;
         db.select('information', 'id')
@@ -186,7 +200,20 @@ app.get('/api/getCalendar/:email/:date', (req, res) => {
             .where('save_date', '=', date)
             .then(user => res.status(200).json(user))
             .catch(err => {
-                res.status(400).json('error getting bmi')
+                res.status(400).json('error getting calendar events')
+            })
+    }
+)
+
+app.get('/api/getDiary/:email/:date', (req, res) => {
+        const { email, date } = req.params;
+        db.select('add_text')
+            .from('diary')
+            .where('email', '=', email)
+            .where('add_date', '=', date)
+            .then(user => res.status(200).json(user))
+            .catch(err => {
+                res.status(400).json('error getting diary text')
             })
     }
 )

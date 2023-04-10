@@ -7,6 +7,17 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-flow: column;
+}
+
+.button-container{
+    margin-top: 1rem;
+    display: flex;
+    gap: 10px;
+}
+
+.date-element{
+    background-color: white;
 }
 
 .text-diary{
