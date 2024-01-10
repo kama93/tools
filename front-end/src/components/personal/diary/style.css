@@ -8,6 +8,7 @@
     justify-content: center;
     align-items: center;
     flex-flow: column;
+    row-gap: 20px;
 }
 
 .button-container{
@@ -21,7 +22,8 @@
 }
 
 .text-diary{
-    height: 50vh;
+    height: 35vh;
+    width: 50vw;
     border-radius: 25px;
     font-family: 'Delicious Handrawn', cursive;
     font-size: 1.5em;

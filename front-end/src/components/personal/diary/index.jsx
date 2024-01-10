@@ -9,7 +9,7 @@ import dayjs from "dayjs";
 
 function Diary() {
     const [diary, setDiary] = useState('');
-    const [value, setValue] = useState();
+    const [value, setValue] = useState(dayjs(new Date().toJSON().slice(0, 10)));
     const inputRef = useRef(null);
 
     const handleChange = (e) => setDiary(e.target.value)
@@ -29,21 +29,20 @@ function Diary() {
 
 
     useEffect(() => {
-        console.log(value)
-        // fetch('/api/getDiary/' + "k@f.com/" + value.format("YYYY-MM-DD"), {
-        //     method: 'get',
-        //     headers: { 'Content-Type': 'application/json' }
-        // })
-        //     .then(response => response.json())
-        //     .then(response => {
-        //         setDiary(response)
-        //         console.log(response)
-        //     })
+        fetch('/api/getDiary/' + "k@f.com/" + value.format("YYYY-MM-DD"), {
+            method: 'get',
+            headers: { 'Content-Type': 'application/json' }
+        })
+            .then(response => response.json())
+            .then(response => {
+                setDiary(response)
+                console.log(response)
+            })
     }, [value])
 
     return (
         <div
-            className="dairy-container absolute top-0 w-full h-full bg-gray-900"
+            className="dairy-container w-full h-full bg-gray-900"
             style={{
                 backgroundImage:
                     "url(https://images.unsplash.com/photo-1619260288316-1dc66c32b718?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80)",
@@ -59,6 +58,7 @@ function Diary() {
                 <DatePicker
                     className="date-element"
                     label="Pick date"
+                    value={value}
                     onChange={(newValue) => setValue(newValue)}
                     formatDate={(date) => date.format('MM-DD-YYYY')}
                 />

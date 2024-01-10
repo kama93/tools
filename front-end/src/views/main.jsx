@@ -8,6 +8,32 @@ function Main() {
     const [joke, setJoke] = useState(true);
     const [quote, setQuote] = useState(false);
 
+    const navArray = [
+        {
+            'image': 'https://images.unsplash.com/photo-1572949645841-094f3a9c4c94?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80',
+            'link': './calendar',
+            'text': 'NEWS'
+
+        },
+        {
+            'image': 'https://images.unsplash.com/photo-1579017308347-e53e0d2fc5e9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80',
+            'link': './calendar',
+            'text': 'PERSONAL'
+
+        },
+        {
+            'image': 'https://images.unsplash.com/photo-1541795795328-f073b763494e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80',
+            'link': './calendar',
+            'text': 'DIET'
+        },
+        {
+            'image': 'https://images.unsplash.com/photo-1623160850502-9bd1bfeec545?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80',
+            'link': './calendar',
+            'text': 'TOOLS'
+
+        }
+    ]
+
     const checkJoke = () => {
         fetch('/api/joke', {
         method: 'get',
@@ -93,40 +119,20 @@ function Main() {
                         </div>
                     </div>
                     <div className="menu-container absolute">
-                        <div className="image-container"
-                             style={{
-                                 backgroundImage:
-                                     "url(https://images.unsplash.com/photo-1572949645841-094f3a9c4c94?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80)",
-                                 backgroundSize: "100%",
-                                 backgroundRepeat: "no-repeat"}}>
-                            <p className="image-text">News</p>
-                        </div>
+                        {navArray.map((element) =>
                             <div className="image-container"
-                                 style={{
-                                     backgroundImage:
-                                         "url(https://images.unsplash.com/photo-1579017308347-e53e0d2fc5e9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80)",
-                                     backgroundSize: "100%",
-                                     backgroundRepeat: "no-repeat"}}>
-                                <Link to='./calendar'>
-                                    <p className="image-text">Personal</p>
+                            >
+                                <div className="image"
+                                    style={{
+                                        backgroundImage: `url(${element.image})`
+                                    }}
+                                >
+                                </div>
+                                <Link to={element.link} className = "link">
+                                    <p className="image-text">{element.text}</p>
                                 </Link>
                             </div>
-                        <div className="image-container"
-                             style={{
-                                 backgroundImage:
-                                     "url(https://images.unsplash.com/photo-1541795795328-f073b763494e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80)",
-                                 backgroundSize: "100%",
-                                 backgroundRepeat: "no-repeat"}}>
-                            <p className="image-text">Diet</p>
-                        </div>
-                        <div className="image-container"
-                             style={{
-                                 backgroundImage:
-                                     "url(https://images.unsplash.com/photo-1623160850502-9bd1bfeec545?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80)",
-                                 backgroundSize: "100%",
-                                 backgroundRepeat: "no-repeat"}}>
-                            <p className="image-text">Tools</p>
-                        </div>
+                    )}
                     </div>
                 </section>
             </main>
