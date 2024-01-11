@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from "react";
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
+
+import Birds from "../components/birdsAnim/index";
 
 import './main.css';
 
@@ -36,11 +38,13 @@ function Main() {
 
     const checkJoke = () => {
         fetch('/api/joke', {
-        method: 'get',
-            headers: { 'Content-Type': 'application/json'}
-    })
-        .then(response => response.json())
-        .then(response => {setText(response[0].joke)})
+            method: 'get',
+            headers: {'Content-Type': 'application/json'}
+        })
+            .then(response => response.json())
+            .then(response => {
+                setText(response[0].joke)
+            })
 
         setJoke(!joke);
         setQuote(!quote);
@@ -49,10 +53,12 @@ function Main() {
     const checkQuotes = () => {
         fetch('/api/quotes', {
             method: 'get',
-            headers: { 'Content-Type': 'application/json'}
+            headers: {'Content-Type': 'application/json'}
         })
             .then(response => response.json())
-            .then(response => {setText(response[0].quote)})
+            .then(response => {
+                setText(response[0].quote)
+            })
 
         setJoke(!joke);
         setQuote(!quote);
@@ -60,11 +66,11 @@ function Main() {
 
     useEffect(() => {
         checkJoke();
-    },[])
+    }, [])
 
     useEffect(() => {
         let nodes = document.querySelectorAll(".header");
-        for(let i= 0; i < nodes.length; i++) {
+        for (let i = 0; i < nodes.length; i++) {
             let words = nodes[i].innerText;
             let html = "";
 
@@ -79,22 +85,22 @@ function Main() {
 
     return (
         <>
-            <article className = "page">
-                <header className ="menu-container">
-                        {navArray.map((element) =>
-                            <div className ="image-container"
+            <article className="page">
+                <header className="menu-container">
+                    {navArray.map((element) =>
+                        <div className="image-container"
+                        >
+                            <div className="image"
+                                 style={{
+                                     backgroundImage: `url(${element.image})`
+                                 }}
                             >
-                                <div className ="image"
-                                     style = {{
-                                         backgroundImage: `url(${element.image})`
-                                     }}
-                                >
-                                </div>
-                                <Link to={element.link} className = "link">
-                                    <p className="image-text">{element.text}</p>
-                                </Link>
                             </div>
-                        )}
+                            <Link to={element.link} className="link">
+                                <p className="image-text">{element.text}</p>
+                            </Link>
+                        </div>
+                    )}
                 </header>
                 <section>
                     <div
@@ -105,33 +111,20 @@ function Main() {
                             backgroundSize: "100%",
                             backgroundRepeat: "no-repeat"
                         }}
-                    ></div>
-                    <div className="container">
-                        <div className="bird-container bird-container--one">
-                            <div className="bird bird--one"></div>
-                        </div>
-                        <div className="bird-container bird-container--two">
-                            <div className="bird bird--two"></div>
-                        </div>
-                        <div className="bird-container bird-container--three">
-                            <div className="bird bird--three"></div>
-                        </div>
-                        <div className="bird-container bird-container--four">
-                            <div className="bird bird--four"></div>
-                        </div>
+                    >
+                        <Birds/>
                     </div>
                 </section>
-            <footer>
-                <div className="buttons-container">
-                    <button className="button-86" role="button" onClick={checkJoke}>Joke</button>
-
-                    <div className="header-container">
-                        <h2 className="header">
-                            {text}
-                        </h2>
+                <footer>
+                    <div className="buttons-container">
+                        <button className="button-86" role="button" onClick={checkJoke}>Joke</button>
+                        <div className="header-container">
+                            <h2 className="header">
+                                {text}
+                            </h2>
+                        </div>
                     </div>
-                </div>
-            </footer>
+                </footer>
             </article>
         </>
     );
