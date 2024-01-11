@@ -6,28 +6,32 @@
     box-sizing: border-box;
 }
 
-section {
-    width: 100vw;
-    height: 100vh
+.page {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
 }
 
-a:link { text-decoration: none; }
+section {
+    top: 20vh;
+    width: 100vw;
+    height: 70vh
+}
+
+footer {
+    height: 15vh;
+    padding: 20px
+}
+
+a:link {
+    text-decoration: none;
+}
 
 .buttons-container{
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100vw;
-    gap: 8rem;
-    padding: 2rem;
-}
-
-button.button-86 {
-    font-family: 'Delicious Handrawn', cursive;
-}
-
-.button-86:focus{
-    color: #082567;
 }
 
 .button-86 {
@@ -49,6 +53,8 @@ button.button-86 {
    user-select: none;
    -webkit-user-select: none;
    touch-action: manipulation;
+    font-family: Helvetica, sans-serif;
+    font-weight: bold;
 }
 
 .button-86::after,
@@ -99,12 +105,10 @@ button.button-86 {
 
 .container {
     z-index: 1;
-    position: relative;
     overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 25rem;
     background-blend-mode: soft-light;
     background-size: cover;
     background-position: center center;
@@ -121,28 +125,23 @@ button.button-86 {
 }
 
 .header {
+    font-family: Helvetica, sans-serif;
     opacity: 0;
     top: 0.6em;
-    font-family: 'Delicious Handrawn', cursive;
-    font-size: 5vh;
-    animation: animateOverlay 0.4s ease-in-out forwards;
+    font-size: 3vh;
+    animation: animateOverlay 5s ease-in-out forwards;
 }
-
-.header:nth-child(4n) { animation-delay: 0s; }
-.header:nth-child(4n+1) { animation-delay: 1s; }
-.header:nth-child(4n+3) { animation-delay: 2s; }
-.header:nth-child(4n+2) { animation-delay: 3s; }
 
 span {
     opacity: 0;
     top: 1em;
-    animation: animateOverlay 1s ease-in-out forwards;
+    animation: animateOverlay 4s ease-in-out forwards;
 }
 
 span:nth-child(4n) { animation-delay: 0s; }
-span:nth-child(4n+1) { animation-delay: 1s; }
-span:nth-child(4n+3) { animation-delay: 2s; }
-span:nth-child(4n+2) { animation-delay: 3s; }
+span:nth-child(4n+1) { animation-delay: 0.5s; }
+span:nth-child(4n+3) { animation-delay: 1s; }
+span:nth-child(4n+2) { animation-delay: 1.5s; }
 
 .bird {
     background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/174479/bird-cells-new.svg);
@@ -221,7 +220,7 @@ span:nth-child(4n+2) { animation-delay: 3s; }
     position: relative;
 }
 .image{
-    width: 20vw;
+    width: 25vw;
     height: 15vh;
     background-size: cover;
     background-position: center;
@@ -232,12 +231,13 @@ span:nth-child(4n+2) { animation-delay: 3s; }
     cursor: pointer;
     opacity: 1;
     font-size: 4vw;
+    transition: all 500ms;
 }
 
 .link {
     position: absolute;
     left: 50%;
-    top: 50%;
+    top: 55%;
     transform: translate(-50%, -50%);
 }
 

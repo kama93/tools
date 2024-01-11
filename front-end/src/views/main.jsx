@@ -79,10 +79,26 @@ function Main() {
 
     return (
         <>
-            <main>
-                <section className="relative">
+            <article className = "page">
+                <header className ="menu-container">
+                        {navArray.map((element) =>
+                            <div className ="image-container"
+                            >
+                                <div className ="image"
+                                     style = {{
+                                         backgroundImage: `url(${element.image})`
+                                     }}
+                                >
+                                </div>
+                                <Link to={element.link} className = "link">
+                                    <p className="image-text">{element.text}</p>
+                                </Link>
+                            </div>
+                        )}
+                </header>
+                <section>
                     <div
-                        className="absolute w-full h-full bg-gray-900"
+                        className="w-full h-full bg-gray-900"
                         style={{
                             backgroundImage:
                                 "url(https://images.unsplash.com/photo-1528460033278-a6ba57020470?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80)",
@@ -90,52 +106,33 @@ function Main() {
                             backgroundRepeat: "no-repeat"
                         }}
                     ></div>
-                    <div className="buttons-container">
-                        <button className="button-86" role="button" onClick={checkJoke}>Joke</button>
-                        <button className="button-86" role="button" onClick={checkQuotes}>Quote</button>
-                    </div>
                     <div className="container">
-
                         <div className="bird-container bird-container--one">
                             <div className="bird bird--one"></div>
                         </div>
-
                         <div className="bird-container bird-container--two">
                             <div className="bird bird--two"></div>
                         </div>
-
-                        <div className="header-container">
-                            <h2 className="header">
-                                {text}
-                            </h2>
-                        </div>
-
                         <div className="bird-container bird-container--three">
                             <div className="bird bird--three"></div>
                         </div>
-
                         <div className="bird-container bird-container--four">
                             <div className="bird bird--four"></div>
                         </div>
                     </div>
-                    <div className="menu-container absolute">
-                        {navArray.map((element) =>
-                            <div className="image-container"
-                            >
-                                <div className="image"
-                                    style={{
-                                        backgroundImage: `url(${element.image})`
-                                    }}
-                                >
-                                </div>
-                                <Link to={element.link} className = "link">
-                                    <p className="image-text">{element.text}</p>
-                                </Link>
-                            </div>
-                    )}
-                    </div>
                 </section>
-            </main>
+            <footer>
+                <div className="buttons-container">
+                    <button className="button-86" role="button" onClick={checkJoke}>Joke</button>
+
+                    <div className="header-container">
+                        <h2 className="header">
+                            {text}
+                        </h2>
+                    </div>
+                </div>
+            </footer>
+            </article>
         </>
     );
 }
