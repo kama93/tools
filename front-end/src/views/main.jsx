@@ -6,9 +6,8 @@ import Birds from "../components/birdsAnim/index";
 import './main.css';
 
 function Main() {
-    const [text, setText] = useState();
-    const [joke, setJoke] = useState(true);
-    const [quote, setQuote] = useState(false);
+    const [joke, setJoke] = useState('');
+    const [quote, setQuote] = useState('');
 
     const navArray = [
         {
@@ -43,11 +42,8 @@ function Main() {
         })
             .then(response => response.json())
             .then(response => {
-                setText(response[0].joke)
-            })
-
-        setJoke(!joke);
-        setQuote(!quote);
+                setJoke(response[0].joke)
+            });
     }
 
     const checkQuotes = () => {
@@ -57,30 +53,27 @@ function Main() {
         })
             .then(response => response.json())
             .then(response => {
-                setText(response[0].quote)
-            })
-
-        setJoke(!joke);
-        setQuote(!quote);
+                setQuote(response[0].quote)
+            });
     }
 
     useEffect(() => {
-        checkJoke();
+        checkQuotes();
     }, [])
 
-    useEffect(() => {
-        let nodes = document.querySelectorAll(".header");
-        for (let i = 0; i < nodes.length; i++) {
-            let words = nodes[i].innerText;
-            let html = "";
-
-            for (let j = 0; j < words.length; j++) {
-                if (words[j] == " ") html += words[j];
-                else html += "<span>" + words[j] + "</span>"
-            }
-            nodes[i].innerHTML = html;
-        }
-    }, [text]);
+    // useEffect(() => {
+    //     let nodes = document.querySelectorAll(".words");
+    //     for (let i = 0; i < nodes.length; i++) {
+    //         let words = nodes[i].innerText;
+    //         let html = "";
+    //
+    //         for (let j = 0; j < words.length; j++) {
+    //             if (words[j] == " ") html += words[j];
+    //             else html += "<span>" + words[j] + "</span>"
+    //         }
+    //         nodes[i].innerHTML = html;
+    //     }
+    // }, [quote]);
 
 
     return (
@@ -88,8 +81,7 @@ function Main() {
             <article className="page">
                 <header className="menu-container">
                     {navArray.map((element) =>
-                        <div className="image-container"
-                        >
+                        <div className="image-container">
                             <div className="image"
                                  style={{
                                      backgroundImage: `url(${element.image})`
@@ -112,18 +104,21 @@ function Main() {
                             backgroundRepeat: "no-repeat"
                         }}
                     >
+                        <div className="quote-container">
+                        <div className="words">
+                            {quote}
+                        </div>
+                        </div>
                         <Birds/>
                     </div>
                 </section>
                 <footer>
-                    <div className="buttons-container">
-                        <button className="button-86" role="button" onClick={checkJoke}>Joke</button>
-                        <div className="header-container">
-                            <h2 className="header">
-                                {text}
+                        <button className="button-footer" role="button" onClick={checkJoke}>Joke</button>
+                        <div className="joke-container">
+                            <h2 className="joke">
+                                {joke}
                             </h2>
                         </div>
-                    </div>
                 </footer>
             </article>
         </>
