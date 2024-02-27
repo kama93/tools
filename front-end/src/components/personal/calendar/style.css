@@ -1,26 +1,10 @@
-/*.data-container {*/
-/*    background-color: #f0f0f0;*/
-/*    opacity: 0.9;*/
-/*    border-radius: 5px;*/
-/*}*/
-
-/*.input-event{*/
-/*    margin: 0.2rem;*/
-/*    width: 98%;*/
-/*}*/
-
-.menu {
-    grid-area: menu;
-}
-.main {
-    grid-area: main;
+.nav-link {
+    color: #C0C0C0;
+    font-weight: bold;
+    font-family: Helvetica, sans-serif;
 }
 
-.container-main {
-    display: grid;
-    width: 100vw;
-
-    grid-template-columns: 20vw 80vw;
-    grid-template-rows: 100vh;
-    grid-template-areas:"menu main"
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link  {
+    background-color: #C0C0C0;
+    color: white;
 }

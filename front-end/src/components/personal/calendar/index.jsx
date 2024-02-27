@@ -104,13 +104,13 @@ function Calendar () {
                 <Modal.Header closeButton>
                     <Modal.Title>{value.format("YYYY-MM-DD")}</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
-                    {currentEvents.length > 0 && currentEvents.map((item) =>
-                    <ListGroup.Item key={item.id} id = {item.id} action onClick={removeEvent}>
-                        {item.information}
-                    </ListGroup.Item>
-                    )}
-                </Modal.Body>
+                {/*<Modal.Body>*/}
+                {/*    {currentEvents.length > 0 && currentEvents.map((item) =>*/}
+                {/*    <ListGroup.Item key={item.id} id = {item.id} action onClick={removeEvent}>*/}
+                {/*        {item.information}*/}
+                {/*    </ListGroup.Item>*/}
+                {/*    )}*/}
+                {/*</Modal.Body>*/}
                 <Form.Control className="input-event" size="sm" type="text" placeholder="Event" ref={inputRef} onChange={updateEvent}/>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>Close</Button>

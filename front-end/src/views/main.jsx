@@ -61,21 +61,6 @@ function Main() {
         checkQuotes();
     }, [])
 
-    // useEffect(() => {
-    //     let nodes = document.querySelectorAll(".words");
-    //     for (let i = 0; i < nodes.length; i++) {
-    //         let words = nodes[i].innerText;
-    //         let html = "";
-    //
-    //         for (let j = 0; j < words.length; j++) {
-    //             if (words[j] == " ") html += words[j];
-    //             else html += "<span>" + words[j] + "</span>"
-    //         }
-    //         nodes[i].innerHTML = html;
-    //     }
-    // }, [quote]);
-
-
     return (
         <>
             <article className="page">
