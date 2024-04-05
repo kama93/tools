@@ -1,9 +1,13 @@
 import React, {useEffect, useState} from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import ListGroup from 'react-bootstrap/ListGroup';
 
 
+import './style.css';
+
 function List () {
+    const [item, setItem] = useState();
     const [list, setList] = useState();
 
         const getList = () => {
@@ -12,12 +16,31 @@ function List () {
                 headers: { 'Content-Type': 'application/json'}
             })
                 .then(response => response.json())
-                .then(response => {setList(response)})
+                .then(response => {setItem(response)})
         }
 
     useEffect(() => {
         getList();
     },[])
+
+    const removeNew = () => {
+            setItem('');
+    }
+
+    const addToList = () => {
+        fetch('/api/list', {
+            method: 'put',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                email: "k@f.com",
+                listItem: item.item
+            })
+        })
+            .then(response => response.json())
+            .then(response => console.log(response));
+
+        setItem('');
+    }
 
     return (
         <div
@@ -29,9 +52,24 @@ function List () {
                 backgroundRepeat: "no-repeat"
             }}>
 
-            <ListGroup as="ol">
-                {list?.item && <ListGroup.Item as="li">{list.item}</ListGroup.Item>}
-            </ListGroup>
+            {/*<ListGroup as="ol">*/}
+            {/*    {list?.item && <ListGroup.Item as="li">{list.item}</ListGroup.Item>}*/}
+            {/*</ListGroup>*/}
+            {item?.item &&
+                <div className= "addItem">
+                    <div className="newItem">{item.item}</div>
+                    {/*<FontAwesomeIcon icon="fa-regular fa-plus" />*/}
+                    <div className= "buttonAdd" onClick={addToList}>+</div>
+                    <div className= "buttonAdd" onClick={removeNew}>-</div>
+                </div>
+                }
+            {/*
+            jutro: rozwiazac font awsome i dodawanie*/}
+            {/*    1. nowy do dodania, ale max 10
+                3. remove button albo zrobione button
+                4. podzial listy na zrobione i  nie zrobione, te zrobione na rolce, ale pokazuje 10 najnowszych
+            5. moze animacja ze jak zrobione to przesuwa sie do drugiej listy? i zmienia kolor
+        */}
 
         </div>
     )

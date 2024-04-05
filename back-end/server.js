@@ -456,6 +456,45 @@ app.get('/api/bucket', (req, res) => {
     const url = 'https://api.api-ninjas.com/v1/bucketlist'
     fetch(url, {headers: {'X-Api-Key': 'Nb4iQ+uZQjerlCDJbrJOyQ==2djcYdO2DVFolkAA'}})
         .then(result => result.json())
-        .then(result => res.status(200).json(result))
+        .then(result => {console.log(result); res.status(200).json(result)})
         .catch(err => { console.log(err); res.status(400).json('joke issue') })
 })
+
+
+// put new item in bucket list
+app.put('/api/list', (req, res) => {
+    const { email, listItem } = req.body;
+    db('list').insert({
+        email: email,
+        listItem: listItem,
+        date: moment().utc().format()
+    })
+        .then(result => res.status(200).json('item added to bucket list'))
+        .catch(err => res.status(400).json('issue with adding item to bucket list'))
+})
+
+// // get bottle number
+// app.get('/api/bottle/:email', (req, res) => {
+//     const { email } = req.params;
+//     checkTokenAccess(req, res, email)
+//     db('bottle').max('date')
+//         .where('email', '=', email)
+//         .then(response => {
+//             const { max } = response[0]
+//
+//             if (!max) {
+//                 res.status(200).json({ numbot: 0 })
+//             } else {
+//                 if (moment(max).format("yyyyMMDD") != moment().format("yyyyMMDD")) {
+//                     res.status(200).json({ numbot: 0 })
+//                 } else {
+//                     db.select('numbot')
+//                         .from('bottle')
+//                         .where('email', '=', email)
+//                         .where('date', '=', max)
+//                         .then(x => res.status(200).json(x[0]))
+//                         .catch(err => res.status(400).json('issue with getting water'))
+//                 }
+//             }
+//         })
+// })

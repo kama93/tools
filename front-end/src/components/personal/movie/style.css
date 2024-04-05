@@ -1,6 +1,7 @@
 .card-img-top {
     height: 40vh;
     width: 30vh;
+    padding: 15px
 }
 
 .card{
@@ -9,4 +10,5 @@
 
 .card-body {
     text-align: center;
+    padding: 25px
 }

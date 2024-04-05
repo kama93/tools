@@ -9,6 +9,11 @@
     color: white;
 }
 
+.nav-link:hover {
+    color: #696969;
+
+}
+
 .dairy-container {
     height: 100vh;
 }

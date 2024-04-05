@@ -34,7 +34,7 @@ function Movie () {
             }}
         >
 
-            {data && <Card style={{ width: '70vw' }}>
+            {data && <Card style={{ width: '50vw' }}>
                 { image.length > 0 && <Card.Img variant="top" src={image}/>}
                 <Card.Body>
                     <Card.Title>{data.original_title}</Card.Title>
