@@ -15,10 +15,10 @@ app.use(cors());
 const db = knex({
     client: 'pg',
     connection: {
-        host : process.env.DB_HOST || '127.0.0.1',
-        user : process.env.DB_USER || 'postgres',
-        password : process.env.DB_PASSWORD || 'test123',
-        database : process.env.DB_NAME || 'fit'
+        host : process.env.DB_HOST || 'skarb-db',
+        user : process.env.DB_USER || 'skarb',
+        password : process.env.DB_PASSWORD || 'kama11051',
+        database : process.env.DB_NAME || 'tools'
     }
 });
 
@@ -470,31 +470,16 @@ app.put('/api/list', (req, res) => {
         date: moment().utc().format()
     })
         .then(result => res.status(200).json('item added to bucket list'))
-        .catch(err => res.status(400).json('issue with adding item to bucket list'))
+        .catch(err => res.status(400).json(`issue with adding item to bucket list: ${err}`))
 })
 
-// // get bottle number
-// app.get('/api/bottle/:email', (req, res) => {
-//     const { email } = req.params;
-//     checkTokenAccess(req, res, email)
-//     db('bottle').max('date')
-//         .where('email', '=', email)
-//         .then(response => {
-//             const { max } = response[0]
-//
-//             if (!max) {
-//                 res.status(200).json({ numbot: 0 })
-//             } else {
-//                 if (moment(max).format("yyyyMMDD") != moment().format("yyyyMMDD")) {
-//                     res.status(200).json({ numbot: 0 })
-//                 } else {
-//                     db.select('numbot')
-//                         .from('bottle')
-//                         .where('email', '=', email)
-//                         .where('date', '=', max)
-//                         .then(x => res.status(200).json(x[0]))
-//                         .catch(err => res.status(400).json('issue with getting water'))
-//                 }
-//             }
-//         })
-// })
+// get weight for graph
+app.get('/api/list/:email', (req, res) => {
+        const { email } = req.params;
+        db.select('listItem')
+            .from('list')
+            .where('email', '=', email)
+            .then(user => res.status(200).json(user))
+            .catch(err => {res.status(400).json(`error getting bucket list ${err}`)})
+    }
+)

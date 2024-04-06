@@ -8,9 +8,9 @@ import './style.css';
 
 function List () {
     const [item, setItem] = useState();
-    const [list, setList] = useState();
+    let [list, setList] = useState([]);
 
-        const getList = () => {
+        const getNew= () => {
             fetch('/api/bucket', {
                 method: 'get',
                 headers: { 'Content-Type': 'application/json'}
@@ -19,8 +19,23 @@ function List () {
                 .then(response => {setItem(response)})
         }
 
+    const getList = () => {
+        fetch('/api/list/' + "k@f.com", {
+            method: 'get',
+            headers: { 'Content-Type': 'application/json' },
+        })
+            .then(response => response.json())
+            .then(response => setList(list = response.map(element => element.listItem)))
+    }
+
+    useEffect(() => {
+        getNew();
+    },[])
+
     useEffect(() => {
         getList();
+
+        console.log(list, 'x')
     },[])
 
     const removeNew = () => {
@@ -52,9 +67,11 @@ function List () {
                 backgroundRepeat: "no-repeat"
             }}>
 
-            {/*<ListGroup as="ol">*/}
-            {/*    {list?.item && <ListGroup.Item as="li">{list.item}</ListGroup.Item>}*/}
-            {/*</ListGroup>*/}
+            <ListGroup as="ol">
+                {list.length > 0 && list.map(element => {
+                    <ListGroup.Item as="li">{element.listItem}</ListGroup.Item>
+                })}
+            </ListGroup>
             {item?.item &&
                 <div className= "addItem">
                     <div className="newItem">{item.item}</div>
@@ -64,7 +81,7 @@ function List () {
                 </div>
                 }
             {/*
-            jutro: rozwiazac font awsome i dodawanie*/}
+            jutro: rozwiazac font awsome*/}
             {/*    1. nowy do dodania, ale max 10
                 3. remove button albo zrobione button
                 4. podzial listy na zrobione i  nie zrobione, te zrobione na rolce, ale pokazuje 10 najnowszych
