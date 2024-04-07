@@ -1,41 +1,40 @@
 import React, {useEffect, useState} from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 
 import ListGroup from 'react-bootstrap/ListGroup';
 
 
 import './style.css';
 
-function List () {
+function List (props) {
     const [item, setItem] = useState();
     let [list, setList] = useState([]);
 
-        const getNew= () => {
-            fetch('/api/bucket', {
-                method: 'get',
-                headers: { 'Content-Type': 'application/json'}
-            })
-                .then(response => response.json())
-                .then(response => {setItem(response)})
-        }
+    const {currentList} = props;
 
-    const getList = () => {
-        fetch('/api/list/' + "k@f.com", {
+    const getNew = () => {
+        fetch('/api/bucket', {
             method: 'get',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json'}
         })
             .then(response => response.json())
-            .then(response => setList(list = response.map(element => element.listItem)))
+            .then(response => {setItem(response)})
     }
 
     useEffect(() => {
         getNew();
     },[])
 
-    useEffect(() => {
-        getList();
-
-        console.log(list, 'x')
+    useEffect( () => {
+        async function inner() {
+            let response = await fetch('/api/list/' + "k@f.com", {
+                method: 'get',
+                headers: {'Content-Type': 'application/json'},
+            })
+            let res = await response.json()
+            setList(list = res.map(element => element.listItem));
+        }
+        inner();
     },[])
 
     const removeNew = () => {
@@ -51,8 +50,7 @@ function List () {
                 listItem: item.item
             })
         })
-            .then(response => response.json())
-            .then(response => console.log(response));
+            .then(response => response.json());
 
         setItem('');
     }
@@ -68,22 +66,22 @@ function List () {
             }}>
 
             <ListGroup as="ol">
-                {list.length > 0 && list.map(element => {
-                    <ListGroup.Item as="li">{element.listItem}</ListGroup.Item>
-                })}
+                {list.length > 0 && list.map(element =>
+                     <ListGroup.Item as="li">{element}</ListGroup.Item>
+                )}
             </ListGroup>
-            {item?.item &&
+            {item?.item && list.length < 10 &&
                 <div className= "addItem">
-                    <div className="newItem">{item.item}</div>
-                    {/*<FontAwesomeIcon icon="fa-regular fa-plus" />*/}
-                    <div className= "buttonAdd" onClick={addToList}>+</div>
-                    <div className= "buttonAdd" onClick={removeNew}>-</div>
+                    <div className="newItem">
+                        {`${item.item}`}
+                        <CheckOutlined onClick={addToList} style={{ fontSize: '15px', color: 'green'}}/>
+                        <CloseOutlined onClick={removeNew} style={{ fontSize: '15px', color: 'red'}}/>
+                    </div>
                 </div>
                 }
             {/*
-            jutro: rozwiazac font awsome*/}
-            {/*    1. nowy do dodania, ale max 10
-                3. remove button albo zrobione button
+            jutro: ogarnac font awsome */}
+            {/*  3. remove button albo zrobione button
                 4. podzial listy na zrobione i  nie zrobione, te zrobione na rolce, ale pokazuje 10 najnowszych
             5. moze animacja ze jak zrobione to przesuwa sie do drugiej listy? i zmienia kolor
         */}

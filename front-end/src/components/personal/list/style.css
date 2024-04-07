@@ -17,7 +17,6 @@
    box-sizing: border-box;
    color: #41403e;
    cursor: pointer;
-   display: inline-block;
    font-family: Neucha, sans-serif;
    font-size: 1rem;
    line-height: 23px;
@@ -32,6 +31,9 @@
    user-select: none;
    -webkit-user-select: none;
    touch-action: manipulation;
+   display: flex;
+   flex-direction: row;
+   column-gap: 5px;
 }
 
 .newItem:hover {
