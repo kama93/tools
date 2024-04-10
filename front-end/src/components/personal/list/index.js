@@ -1,16 +1,19 @@
 import React, {useEffect, useState} from 'react';
-import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
+import { CheckOutlined, CloseOutlined, PlusOutlined } from '@ant-design/icons';
 
 import ListGroup from 'react-bootstrap/ListGroup';
 
 
 import './style.css';
 
-function List (props) {
+// do zrobienia: usuwanie elementu, inny styl guzika do dodawania, zeby nowy pomysl sie pokazyal, jakzronipmne to przekreslic
+
+
+function List () {
     const [item, setItem] = useState();
     let [list, setList] = useState([]);
 
-    const {currentList} = props;
+    const maxCapacity = 10;
 
     const getNew = () => {
         fetch('/api/bucket', {
@@ -25,24 +28,17 @@ function List (props) {
         getNew();
     },[])
 
-    useEffect( () => {
-        async function inner() {
-            let response = await fetch('/api/list/' + "k@f.com", {
-                method: 'get',
-                headers: {'Content-Type': 'application/json'},
-            })
-            let res = await response.json()
-            setList(list = res.map(element => element.listItem));
-        }
-        inner();
-    },[])
-
-    const removeNew = () => {
-            setItem('');
+    const inner = async () => {
+        let response = await fetch('/api/list/' + "k@f.com", {
+            method: 'get',
+            headers: {'Content-Type': 'application/json'},
+        })
+        let res = await response.json()
+        setList(list = res.map(element => element.listItem));
     }
 
-    const addToList = () => {
-        fetch('/api/list', {
+    const addNew = async () => {
+        let response = await fetch('/api/list', {
             method: 'put',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -50,7 +46,28 @@ function List (props) {
                 listItem: item.item
             })
         })
-            .then(response => response.json());
+        await response.json()
+    }
+
+    useEffect( () => {
+        inner();
+    },[])
+
+    const removeNew = () => {
+            setItem('');
+    }
+
+    const addToList = async () => {
+        await addNew();
+
+        await inner();
+
+        setItem('');
+    }
+
+    const removeFromList = async (index) => {
+        console.log(index)
+        await inner();
 
         setItem('');
     }
@@ -66,26 +83,24 @@ function List (props) {
             }}>
 
             <ListGroup as="ol">
-                {list.length > 0 && list.map(element =>
-                     <ListGroup.Item as="li">{element}</ListGroup.Item>
+                {list.length > 0 && list.map((element, index) =>
+                     <ListGroup.Item as="li" className = "listItem" key ={index}>
+                         {element}
+                         <CheckOutlined onClick={() => removeFromList(index)} style={{ fontSize: '15px', color: 'green'}}/>
+                     </ListGroup.Item>
                 )}
             </ListGroup>
-            {item?.item && list.length < 10 &&
+            {item?.item && list.length < maxCapacity &&
                 <div className= "addItem">
                     <div className="newItem">
                         {`${item.item}`}
-                        <CheckOutlined onClick={addToList} style={{ fontSize: '15px', color: 'green'}}/>
-                        <CloseOutlined onClick={removeNew} style={{ fontSize: '15px', color: 'red'}}/>
+                        <div className = "buttonsNewItem">
+                            <PlusOutlined onClick={addToList} style={{ fontSize: '15px', color: 'green'}}/>
+                            <CloseOutlined onClick={removeNew} style={{ fontSize: '15px', color: 'red'}}/>
+                        </div>
                     </div>
                 </div>
                 }
-            {/*
-            jutro: ogarnac font awsome */}
-            {/*  3. remove button albo zrobione button
-                4. podzial listy na zrobione i  nie zrobione, te zrobione na rolce, ale pokazuje 10 najnowszych
-            5. moze animacja ze jak zrobione to przesuwa sie do drugiej listy? i zmienia kolor
-        */}
-
         </div>
     )
 }
