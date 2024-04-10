@@ -24,6 +24,19 @@ function List () {
             .then(response => {setItem(response)})
     }
 
+    const removeItem = async  (element) => {
+        let response = await fetch('/api/deleteList', {
+            method: 'put',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                email: "k@f.com",
+                listItem: element
+            })
+        });
+        const res = await response.json();
+        console.log(res)
+    }
+
     useEffect(() => {
         getNew();
     },[])
@@ -33,8 +46,8 @@ function List () {
             method: 'get',
             headers: {'Content-Type': 'application/json'},
         })
-        let res = await response.json()
-        setList(list = res.map(element => element.listItem));
+        let res = await response.json();
+        setList(list = res);
     }
 
     const addNew = async () => {
@@ -65,11 +78,9 @@ function List () {
         setItem('');
     }
 
-    const removeFromList = async (index) => {
-        console.log(index)
+    const removeFromList = async (element) => {
+        await removeItem(element);
         await inner();
-
-        setItem('');
     }
 
     return (
@@ -84,9 +95,9 @@ function List () {
 
             <ListGroup as="ol">
                 {list.length > 0 && list.map((element, index) =>
-                     <ListGroup.Item as="li" className = "listItem" key ={index}>
-                         {element}
-                         <CheckOutlined onClick={() => removeFromList(index)} style={{ fontSize: '15px', color: 'green'}}/>
+                     <ListGroup.Item as="li" className = "listItem" key ={index} style={{textDecoration: element.isActive ? 'none' : 'line-through'}}>
+                         {element.listItem}
+                         {element.isActive && <CheckOutlined onClick={() => removeFromList(element)} style={{ fontSize: '15px', color: 'green'}}/>}
                      </ListGroup.Item>
                 )}
             </ListGroup>

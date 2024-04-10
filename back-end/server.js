@@ -414,10 +414,7 @@ app.get('/api/weight/:email', (req, res) => {
         .from('weight')
         .where('email', '=', email)
         .then(user => res.status(200).json(user))
-        .catch(err => {
-            console.log(err)
-            res.status(400).json('error getting weight')
-        })
+        .catch(err => {res.status(400).json('error getting weight')})
 }
 )
 
@@ -467,7 +464,8 @@ app.put('/api/list', (req, res) => {
     db('list').insert({
         email: email,
         listItem: listItem,
-        date: moment().utc().format()
+        date: moment().utc().format(),
+        isActive: true
     })
         .then(result => res.status(200).json('item added to bucket list'))
         .catch(err => res.status(400).json(`issue with adding item to bucket list: ${err}`))
@@ -476,10 +474,21 @@ app.put('/api/list', (req, res) => {
 // get weight for graph
 app.get('/api/list/:email', (req, res) => {
         const { email } = req.params;
-        db.select('listItem')
+        db.select('listItem', 'isActive')
             .from('list')
             .where('email', '=', email)
             .then(user => res.status(200).json(user))
             .catch(err => {res.status(400).json(`error getting bucket list ${err}`)})
     }
 )
+
+// put calories in database
+app.put('/api/deleteList', (req, res) => {
+    const { email,  listItem} = req.body;
+    db.from('list')
+        .where('email', '=', email)
+        .where('listItem', '=', listItem)
+        .update({isActive: false})
+        .then(result => res.status(200).json('Item removed'))
+        .catch(err => res.status(400).json(`issue with removing item ${err}`))
+})
