@@ -6,7 +6,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 
 import './style.css';
 
-// do zrobienia: usuwanie elementu, inny styl guzika do dodawania, zeby nowy pomysl sie pokazyal, jakzronipmne to przekreslic
+// do zrobienia: jak zrobic updaye w serwerze, inny styl guzika do dodawania
 
 
 function List () {
@@ -34,7 +34,6 @@ function List () {
             })
         });
         const res = await response.json();
-        console.log(res)
     }
 
     useEffect(() => {
@@ -67,15 +66,15 @@ function List () {
     },[])
 
     const removeNew = () => {
-            setItem('');
+        getNew();
     }
 
     const addToList = async () => {
+        getNew();
+
         await addNew();
 
         await inner();
-
-        setItem('');
     }
 
     const removeFromList = async (element) => {
