@@ -24,13 +24,13 @@ function List () {
             .then(response => {setItem(response)})
     }
 
-    const removeItem = async  (element) => {
+    const removeItem = async  ({id}) => {
         let response = await fetch('/api/deleteList', {
             method: 'put',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 email: "k@f.com",
-                listItem: element
+                id
             })
         });
         const res = await response.json();
