@@ -6,7 +6,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 
 import './style.css';
 
-// do zrobienia: jak zrobic updaye w serwerze, inny styl guzika do dodawania
+// do zrobienia: dodac zeby od razu 10 miejsc bylo, inny styl guzika do dodawania, czyszczenie kodu
 
 
 function List () {
@@ -25,6 +25,9 @@ function List () {
     }
 
     const removeItem = async  ({id}) => {
+        if (id === null) {
+            return;
+        }
         let response = await fetch('/api/deleteList', {
             method: 'put',
             headers: {'Content-Type': 'application/json'},
@@ -33,7 +36,7 @@ function List () {
                 id
             })
         });
-        const res = await response.json();
+         await response.json();
     }
 
     useEffect(() => {
@@ -46,6 +49,11 @@ function List () {
             headers: {'Content-Type': 'application/json'},
         })
         let res = await response.json();
+
+        while (res.length < 10) {
+            res.push({'listItem': '', 'id': null, 'isActive': true})
+        }
+
         setList(list = res);
     }
 
@@ -96,11 +104,11 @@ function List () {
                 {list.length > 0 && list.map((element, index) =>
                      <ListGroup.Item as="li" className = "listItem" key ={index} style={{textDecoration: element.isActive ? 'none' : 'line-through'}}>
                          {element.listItem}
-                         {element.isActive && <CheckOutlined onClick={() => removeFromList(element)} style={{ fontSize: '15px', color: 'green'}}/>}
+                         {element.isActive && element.id!==null && <CheckOutlined onClick={() => removeFromList(element)} style={{ fontSize: '15px', color: 'green'}}/>}
                      </ListGroup.Item>
                 )}
             </ListGroup>
-            {item?.item && list.length < maxCapacity &&
+            {item?.item &&
                 <div className= "addItem">
                     <div className="newItem">
                         {`${item.item}`}
