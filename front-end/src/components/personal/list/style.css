@@ -35,6 +35,7 @@
    flex-direction: row;
    justify-content: space-between;
    column-gap: 30px;
+   opacity: 0.9;
 }
 
 .newItem:hover {
@@ -69,4 +70,26 @@
    justify-content: space-between;
    column-gap: 10px;
    align-items: center;
+}
+
+.textArea {
+   border: none;
+   outline: none;
+   box-sizing: border-box;
+   height: 95%;
+   padding: 0;
+   width: 100%;
+}
+
+.textArea:active, .textArea:focus{
+   border: none !important;
+   outline: none !important;
+   box-shadow:none !important;
+}
+
+.privateItem {
+   display: flex;
+   flex-direction: row;
+   justify-content: space-between;
+   width: 100%;
 }

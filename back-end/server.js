@@ -477,6 +477,7 @@ app.get('/api/list/:email', (req, res) => {
         db.select('listItem', 'isActive', 'id')
             .from('list')
             .where('email', '=', email)
+            .orderBy('id')
             .then(user => res.status(200).json(user))
             .catch(err => {res.status(400).json(`error getting bucket list ${err}`)})
     }

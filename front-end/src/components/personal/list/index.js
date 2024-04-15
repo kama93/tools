@@ -1,30 +1,32 @@
 import React, {useEffect, useState} from 'react';
-import { CheckOutlined, CloseOutlined, PlusOutlined } from '@ant-design/icons';
+import {CheckOutlined, CloseOutlined, PlusOutlined} from '@ant-design/icons';
 
 import ListGroup from 'react-bootstrap/ListGroup';
 
 
 import './style.css';
 
-// do zrobienia: dodac zeby od razu 10 miejsc bylo, inny styl guzika do dodawania, czyszczenie kodu
+//czyszczenie kodu
 
 
-function List () {
-    const [item, setItem] = useState();
+function List() {
+    const [item, setItem] = useState({});
     let [list, setList] = useState([]);
-
-    const maxCapacity = 10;
+    let [privateItem, setPrivateItem] = useState([]);
+    let [isFull, setIsFull] = useState(false);
 
     const getNew = () => {
         fetch('/api/bucket', {
             method: 'get',
-            headers: { 'Content-Type': 'application/json'}
+            headers: {'Content-Type': 'application/json'}
         })
             .then(response => response.json())
-            .then(response => {setItem(response)})
+            .then(response => {
+                setItem(response)
+            })
     }
 
-    const removeItem = async  ({id}) => {
+    const removeItem = async ({id}) => {
         if (id === null) {
             return;
         }
@@ -36,12 +38,16 @@ function List () {
                 id
             })
         });
-         await response.json();
+        await response.json();
+    }
+
+    const addInput = (event) => {
+        setPrivateItem(event.target.value)
     }
 
     useEffect(() => {
         getNew();
-    },[])
+    }, [])
 
     const inner = async () => {
         let response = await fetch('/api/list/' + "k@f.com", {
@@ -50,6 +56,8 @@ function List () {
         })
         let res = await response.json();
 
+        if (res.length >= 10) setIsFull(true);
+
         while (res.length < 10) {
             res.push({'listItem': '', 'id': null, 'isActive': true})
         }
@@ -57,21 +65,29 @@ function List () {
         setList(list = res);
     }
 
-    const addNew = async () => {
+    const addNew = async (element) => {
         let response = await fetch('/api/list', {
             method: 'put',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 email: "k@f.com",
-                listItem: item.item
+                listItem: element
             })
         })
         await response.json()
     }
 
-    useEffect( () => {
+    const addPersonalIdea = async () => {
+        if (privateItem.length >0) {
+            await addNew(privateItem);
+
+            await inner();
+        }
+    }
+
+    useEffect(() => {
         inner();
-    },[])
+    }, [])
 
     const removeNew = () => {
         getNew();
@@ -80,7 +96,7 @@ function List () {
     const addToList = async () => {
         getNew();
 
-        await addNew();
+        await addNew(item.item);
 
         await inner();
     }
@@ -102,23 +118,32 @@ function List () {
 
             <ListGroup as="ol">
                 {list.length > 0 && list.map((element, index) =>
-                     <ListGroup.Item as="li" className = "listItem" key ={index} style={{textDecoration: element.isActive ? 'none' : 'line-through'}}>
-                         {element.listItem}
-                         {element.isActive && element.id!==null && <CheckOutlined onClick={() => removeFromList(element)} style={{ fontSize: '15px', color: 'green'}}/>}
-                     </ListGroup.Item>
+                    <ListGroup.Item as="li" className="listItem" key={index} style={{
+                        textDecoration: element.isActive ? 'none' : 'line-through',
+                        opacity: element.isActive ? 1 : 0.5
+                    }}>
+                        {element.listItem ? element.listItem :
+                            <div className="privateItem">
+                                <input type="text" className="textArea" minLength={1}
+                                       onChange={(event) => addInput(event)}/>
+                                <PlusOutlined onClick={addPersonalIdea} style={{fontSize: '15px', color: 'green'}}/>
+                            </div>}
+                        {element.isActive && element.id !== null &&
+                            <CheckOutlined onClick={() => removeFromList(element)} style={{fontSize: '15px', color: 'green'}}/>}
+                    </ListGroup.Item>
                 )}
             </ListGroup>
-            {item?.item &&
-                <div className= "addItem">
+            {item?.item && !isFull &&
+                <div className="addItem">
                     <div className="newItem">
                         {`${item.item}`}
-                        <div className = "buttonsNewItem">
-                            <PlusOutlined onClick={addToList} style={{ fontSize: '15px', color: 'green'}}/>
-                            <CloseOutlined onClick={removeNew} style={{ fontSize: '15px', color: 'red'}}/>
+                        <div className="buttonsNewItem">
+                            <PlusOutlined onClick={addToList} style={{fontSize: '15px', color: 'green'}}/>
+                            <CloseOutlined onClick={removeNew} style={{fontSize: '15px', color: 'red'}}/>
                         </div>
                     </div>
                 </div>
-                }
+            }
         </div>
     )
 }
