@@ -1,3 +1,35 @@
+.listItem {
+   margin: 2px;
+   display: flex;
+   flex-direction: row;
+   justify-content: space-between;
+   align-items: center;
+   column-gap: 10px;
+   height: 32px;
+}
+
+.privateItem {
+   display: flex;
+   flex-direction: row;
+   justify-content: space-between;
+   width: 100%;
+}
+
+.textArea {
+   border: none;
+   outline: none;
+   box-sizing: border-box;
+   height: 95%;
+   padding: 0;
+   width: 100%;
+}
+
+.textArea:active, .textArea:focus{
+   border: none !important;
+   outline: none !important;
+   box-shadow:none !important;
+}
+
 .addItem {
    display: flex;
    flex-direction: row;
@@ -47,49 +79,10 @@
     box-shadow: rgba(0, 0, 0, .3) 2px 8px 4px -6px;
 }
 
-.buttonAdd {
-   font-size: 2rem;
-   background-color: white;
-   margin: 0.5rem;
-   padding: 0.5rem;
-}
-
-.listItem {
-   margin: 2px;
-   display: flex;
-   flex-direction: row;
-   justify-content: space-between;
-   align-items: center;
-   column-gap: 10px;
-   height: 32px;
-}
-
 .buttonsNewItem {
    display: flex;
    flex-direction: row;
    justify-content: space-between;
    column-gap: 10px;
    align-items: center;
-}
-
-.textArea {
-   border: none;
-   outline: none;
-   box-sizing: border-box;
-   height: 95%;
-   padding: 0;
-   width: 100%;
-}
-
-.textArea:active, .textArea:focus{
-   border: none !important;
-   outline: none !important;
-   box-shadow:none !important;
-}
-
-.privateItem {
-   display: flex;
-   flex-direction: row;
-   justify-content: space-between;
-   width: 100%;
 }

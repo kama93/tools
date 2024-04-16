@@ -6,14 +6,18 @@ import ListGroup from 'react-bootstrap/ListGroup';
 
 import './style.css';
 
-//czyszczenie kodu
-
-
 function List() {
     const [item, setItem] = useState({});
     let [list, setList] = useState([]);
-    let [privateItem, setPrivateItem] = useState([]);
-    let [isFull, setIsFull] = useState(false);
+    const [privateItem, setPrivateItem] = useState([]);
+    const [isFull, setIsFull] = useState(false);
+
+    const maxCapacity = 10;
+    const emptyObject = {
+        'listItem': '',
+        'id': null,
+        'isActive': true
+    };
 
     const getNew = () => {
         fetch('/api/bucket', {
@@ -23,13 +27,14 @@ function List() {
             .then(response => response.json())
             .then(response => {
                 setItem(response)
-            })
-    }
+            });
+    };
 
     const removeItem = async ({id}) => {
         if (id === null) {
             return;
         }
+
         let response = await fetch('/api/deleteList', {
             method: 'put',
             headers: {'Content-Type': 'application/json'},
@@ -39,31 +44,7 @@ function List() {
             })
         });
         await response.json();
-    }
-
-    const addInput = (event) => {
-        setPrivateItem(event.target.value)
-    }
-
-    useEffect(() => {
-        getNew();
-    }, [])
-
-    const inner = async () => {
-        let response = await fetch('/api/list/' + "k@f.com", {
-            method: 'get',
-            headers: {'Content-Type': 'application/json'},
-        })
-        let res = await response.json();
-
-        if (res.length >= 10) setIsFull(true);
-
-        while (res.length < 10) {
-            res.push({'listItem': '', 'id': null, 'isActive': true})
-        }
-
-        setList(list = res);
-    }
+    };
 
     const addNew = async (element) => {
         let response = await fetch('/api/list', {
@@ -73,25 +54,33 @@ function List() {
                 email: "k@f.com",
                 listItem: element
             })
-        })
-        await response.json()
-    }
+        });
+        await response.json();
+    };
 
     const addPersonalIdea = async () => {
-        if (privateItem.length >0) {
+        if (privateItem.length > 0) {
             await addNew(privateItem);
 
             await inner();
         }
-    }
+    };
 
-    useEffect(() => {
-        inner();
-    }, [])
+    const inner = async () => {
+        let response = await fetch('/api/list/' + "k@f.com", {
+            method: 'get',
+            headers: {'Content-Type': 'application/json'},
+        })
+        let res = await response.json();
 
-    const removeNew = () => {
-        getNew();
-    }
+        if (res.length >= maxCapacity) setIsFull(true);
+
+        while (res.length < maxCapacity) {
+            res.push(emptyObject);
+        }
+
+        setList(list = res);
+    };
 
     const addToList = async () => {
         getNew();
@@ -99,12 +88,28 @@ function List() {
         await addNew(item.item);
 
         await inner();
-    }
+    };
 
     const removeFromList = async (element) => {
         await removeItem(element);
         await inner();
     }
+
+    const removeNew = () => {
+        getNew();
+    };
+
+    const addInput = (event) => {
+        setPrivateItem(event.target.value)
+    };
+
+    useEffect(() => {
+        getNew();
+    }, []);
+
+    useEffect(() => {
+        inner();
+    }, []);
 
     return (
         <div
@@ -124,8 +129,7 @@ function List() {
                     }}>
                         {element.listItem ? element.listItem :
                             <div className="privateItem">
-                                <input type="text" className="textArea" minLength={1}
-                                       onChange={(event) => addInput(event)}/>
+                                <input type="text" className="textArea" minLength={1} onChange={(event) => addInput(event)}/>
                                 <PlusOutlined onClick={addPersonalIdea} style={{fontSize: '15px', color: 'green'}}/>
                             </div>}
                         {element.isActive && element.id !== null &&
