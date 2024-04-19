@@ -95,13 +95,9 @@ function List() {
         await inner();
     }
 
-    const removeNew = () => {
-        getNew();
-    };
+    const removeNew = () => getNew();
 
-    const addInput = (event) => {
-        setPrivateItem(event.target.value)
-    };
+    const addInput = (event) => setPrivateItem(event.target.value);
 
     useEffect(() => {
         getNew();

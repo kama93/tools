@@ -7,6 +7,8 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import './style.css';
 import dayjs from "dayjs";
 
+// do zrobienia naprawic pobieranie i wysylanie; oddac padding do textarea, poprawic napis pick date, lepszy styl guzika
+
 function Diary() {
     const [diary, setDiary] = useState('');
     const [value, setValue] = useState(dayjs(new Date().toJSON().slice(0, 10)));
