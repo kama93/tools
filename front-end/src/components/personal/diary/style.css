@@ -28,6 +28,7 @@
     font-family: 'Delicious Handrawn', cursive;
     font-size: 1.5em;
     opacity: 0.6;
+    padding: 20px;
 }
 
 .text-diary ::placeholder{

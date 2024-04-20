@@ -180,16 +180,14 @@ app.put('/api/deleteEvent', (req, res) => {
 
 // put calories in database
 app.put('/api/diary', (req, res) => {
-    const { email,  text} = req.body;
-    db.from('diary')
-        .then(db_res => {
-            db('diary').insert({
-                email: email,
-                add_text: text
-            })
-                .then(result => res.status(200).json('Diary added'))
-                .catch(err => res.status(400).json('issue with adding diary'))
+    const {email,  text, date} = req.body;
+        db('diary').insert({
+            email: email,
+            add_text: text,
+            add_date: date
         })
+            .then(result => res.status(200).json('Diary added'))
+            .catch(err => { console.log(err); res.status(400).json(`issue with adding diary ${err}`)})
 })
 
 app.get('/api/getCalendar/:email/:date', (req, res) => {
@@ -348,7 +346,7 @@ app.get('/api/ingredients/:ingredient', (req, res) => {
     fetch(url)
         .then(result => result.json())
         .then(result => res.status(200).json(result))
-        .then(data => console.log(data))
+        // .then(data => console.log(data))
         .catch(err => res.status(400).json('fetch recipe base on ingredients issue'))
 })
 
@@ -370,7 +368,7 @@ app.get('/api/joke', (req, res) => {
     fetch(url, {headers: {'X-Api-Key': 'Nb4iQ+uZQjerlCDJbrJOyQ==2djcYdO2DVFolkAA'}})
         .then(result => result.json())
         .then(result => res.status(200).json(result))
-        .catch(err => { console.log(err); res.status(400).json('joke issue') })
+        .catch(err => { res.status(400).json('joke issue') })
 })
 
 // get meal plan from food API
@@ -379,7 +377,7 @@ app.get('/api/quotes', (req, res) => {
     fetch(url, {headers: {'X-Api-Key': 'Nb4iQ+uZQjerlCDJbrJOyQ==2djcYdO2DVFolkAA'}})
         .then(result => result.json())
         .then(result => res.status(200).json(result))
-        .catch(err => { console.log(err); res.status(400).json('joke issue') })
+        .catch(err => { res.status(400).json('joke issue') })
 })
 
 // put weight in database
@@ -430,7 +428,7 @@ app.get('/api/air/:lat/:lng', (req, res) => {
     fetch(url)
         .then(result => result.json())
         .then(result => res.status(200).json(result))
-        .catch(err => { console.log(err); res.status(400).json('fetch pollution issue') })
+        .catch(err => { res.status(400).json('fetch pollution issue') })
 })
 
 const port = process.env.PORT || 3003
@@ -445,7 +443,7 @@ app.post('/api/joker', (req,res)=>{
     fetch(url)
         .then(result=>result.json())
         .then(result => res.status(200).json(result))
-        .then(data=>console.log(data))
+        // .then(data=>console.log(data))
         .catch(err=> res.status(400).json('fetch movie issue'))
 })
 
@@ -453,8 +451,8 @@ app.get('/api/bucket', (req, res) => {
     const url = 'https://api.api-ninjas.com/v1/bucketlist'
     fetch(url, {headers: {'X-Api-Key': 'Nb4iQ+uZQjerlCDJbrJOyQ==2djcYdO2DVFolkAA'}})
         .then(result => result.json())
-        .then(result => {console.log(result); res.status(200).json(result)})
-        .catch(err => { console.log(err); res.status(400).json('joke issue') })
+        .then(result => {res.status(200).json(result)})
+        .catch(err => { res.status(400).json('joke issue') })
 })
 
 

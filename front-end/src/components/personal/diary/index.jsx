@@ -7,7 +7,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import './style.css';
 import dayjs from "dayjs";
 
-// do zrobienia naprawic pobieranie i wysylanie; oddac padding do textarea, poprawic napis pick date, lepszy styl guzika
+// do zrobienia naprawic pobieranie i wysylanie, lepszy styl guzika, putac czy wprowadzic zmiany do istaaniejacego wpisu
 
 function Diary() {
     const [diary, setDiary] = useState('');
@@ -22,7 +22,8 @@ function Diary() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 email: "k@f.com",
-                text: diary
+                text: diary,
+                date: new Date().toJSON().split("T")[0]
             })
         })
 
@@ -38,7 +39,6 @@ function Diary() {
             .then(response => response.json())
             .then(response => {
                 setDiary(response)
-                console.log(response)
             })
     }, [value])
 
@@ -59,7 +59,6 @@ function Diary() {
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
                     className="date-element"
-                    label="Pick date"
                     value={value}
                     onChange={(newValue) => setValue(newValue)}
                     formatDate={(date) => date.format('MM-DD-YYYY')}
