@@ -210,9 +210,7 @@ app.get('/api/getDiary/:email/:date', (req, res) => {
             .where('email', '=', email)
             .where('add_date', '=', date)
             .then(user => res.status(200).json(user))
-            .catch(err => {
-                res.status(400).json('error getting diary text')
-            })
+            .catch(err => {res.status(400).json(`error getting diary text ${err}`)})
     }
 )
 

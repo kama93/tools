@@ -7,12 +7,11 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import './style.css';
 import dayjs from "dayjs";
 
-// do zrobienia naprawic pobieranie i wysylanie, lepszy styl guzika, putac czy wprowadzic zmiany do istaaniejacego wpisu
+//naspisanie w bazie danych
 
 function Diary() {
     const [diary, setDiary] = useState('');
     const [value, setValue] = useState(dayjs(new Date().toJSON().slice(0, 10)));
-    const inputRef = useRef(null);
 
     const handleChange = (e) => setDiary(e.target.value)
 
@@ -26,10 +25,7 @@ function Diary() {
                 date: new Date().toJSON().split("T")[0]
             })
         })
-
-        inputRef.current.value = "";
     }
-
 
     useEffect(() => {
         fetch('/api/getDiary/' + "k@f.com/" + value.format("YYYY-MM-DD"), {
@@ -37,9 +33,7 @@ function Diary() {
             headers: { 'Content-Type': 'application/json' }
         })
             .then(response => response.json())
-            .then(response => {
-                setDiary(response)
-            })
+            .then(response => {setDiary(response[0].add_text)})
     }, [value])
 
     return (
@@ -52,9 +46,9 @@ function Diary() {
                 backgroundRepeat: "no-repeat"
             }}>
 
-            <textarea type="text" id="name" onChange={handleChange} className="text-diary" required minLength="4" cols="90" placeholder="My diary..." ref={inputRef}/>
+            <textarea type="text" id="name" onChange={handleChange} className="text-diary" required minLength="4" cols="90" placeholder="My diary..." value={diary}/>
             <div className="button-container">
-                <Button variant="primary" onClick={handleSend}>Add</Button>
+                <button type="button" className= "diaryUpdating" onClick={handleSend}>ADD</button>
             </div>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
