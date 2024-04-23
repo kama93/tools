@@ -181,13 +181,31 @@ app.put('/api/deleteEvent', (req, res) => {
 // put calories in database
 app.put('/api/diary', (req, res) => {
     const {email,  text, date} = req.body;
-        db('diary').insert({
-            email: email,
-            add_text: text,
-            add_date: date
+    db('diary')
+        .where('email', '=', email)
+        .where('add_date', '=', date)
+        .then(dbResult => {
+            console.log(dbResult)
+            if (dbResult.length === 0) {
+                db('diary').insert({
+                    email: email,
+                    add_text: text,
+                    add_date: date
+                })
+                    .then(result => res.status(200).json('Diary added'))
+                    .catch(err => {res.status(400).json(`issue with adding diary ${err}`)})
+
+            } else {
+                db('diary')
+                    .where('add_date', '=', date)
+                    .update({
+                        add_text: text
+                    })
+                    .then(result => res.status(200).json('Diary updated'))
+                    .catch(err => {res.status(400).json(`issue with updating diary ${err}`)})
+
+            }
         })
-            .then(result => res.status(200).json('Diary added'))
-            .catch(err => { console.log(err); res.status(400).json(`issue with adding diary ${err}`)})
 })
 
 app.get('/api/getCalendar/:email/:date', (req, res) => {

@@ -7,7 +7,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import './style.css';
 import dayjs from "dayjs";
 
-//naspisanie w bazie danych
+// co jesli pusty dzxien, zmiana koloru textarea jak sie na nia najedzie,dodac linie, blokowac niedzisiejsze wpisy
 
 function Diary() {
     const [diary, setDiary] = useState('');
