@@ -1,5 +1,4 @@
-import React, {useState, useRef, useEffect} from 'react';
-import Button from 'react-bootstrap/Button';
+import React, {useState, useEffect} from 'react';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -7,10 +6,10 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import './style.css';
 import dayjs from "dayjs";
 
-// co jesli pusty dzxien, zmiana koloru textarea jak sie na nia najedzie,dodac linie, blokowac niedzisiejsze wpisy
-
+// zapisz co jakis czas, bez guzika
 function Diary() {
-    const [diary, setDiary] = useState('');
+    const today = new Date().toJSON().split("T")[0];
+    let [diary, setDiary] = useState('');
     const [value, setValue] = useState(dayjs(new Date().toJSON().slice(0, 10)));
 
     const handleChange = (e) => setDiary(e.target.value)
@@ -22,7 +21,7 @@ function Diary() {
             body: JSON.stringify({
                 email: "k@f.com",
                 text: diary,
-                date: new Date().toJSON().split("T")[0]
+                date: today
             })
         })
     }
@@ -33,7 +32,11 @@ function Diary() {
             headers: { 'Content-Type': 'application/json' }
         })
             .then(response => response.json())
-            .then(response => {setDiary(response[0].add_text)})
+            .then(response => {
+                if (response.length) {
+                    setDiary(diary = response[0].add_text)
+                } else setDiary(diary = '');
+    });
     }, [value])
 
     return (
@@ -46,7 +49,7 @@ function Diary() {
                 backgroundRepeat: "no-repeat"
             }}>
 
-            <textarea type="text" id="name" onChange={handleChange} className="text-diary" required minLength="4" cols="90" placeholder="My diary..." value={diary}/>
+            <textarea type="text" id="name" onChange={handleChange} className="text-diary" required minLength="4" cols="90" placeholder="My diary..." value={diary} disabled= {value.format("YYYY-MM-DD") !== today}/>
             <div className="button-container">
                 <button type="button" className= "diaryUpdating" onClick={handleSend}>ADD</button>
             </div>

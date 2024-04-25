@@ -27,8 +27,15 @@
     border-radius: 25px;
     font-family: 'Delicious Handrawn', cursive;
     font-size: 1.5em;
-    opacity: 0.6;
-    padding: 20px;
+    opacity: 0.8;
+    background-attachment: local;
+    background-image:
+            linear-gradient(to right, #FFFACD 10px, transparent 10px),
+            linear-gradient(to left, #FFFACD 10px, transparent 10px),
+            repeating-linear-gradient(#FFFACD, #FFFACD 30px, #ccc 30px, #ccc 31px, white 31px);
+    line-height: 31px;
+    padding: 8px 10px;
+    border-color: transparent
 }
 
 .text-diary ::placeholder{
@@ -36,6 +43,14 @@
     font-size: 2em;
     color: white;
     padding: 1rem;
+}
+
+.text-diary:active,
+.text-diary:focus,
+.text-diary:focus-visible
+{
+    border-color: transparent;
+    --tw-ring-color: transparent;
 }
 
 .diaryUpdating {
