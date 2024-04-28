@@ -12,18 +12,33 @@ function Diary() {
     let [diary, setDiary] = useState('');
     const [value, setValue] = useState(dayjs(new Date().toJSON().slice(0, 10)));
 
-    const handleChange = (e) => setDiary(e.target.value)
+    let timeoutId = [];
 
-    const handleSend = () => {
-        fetch('/api/diary', {
-            method: 'put',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                email: "k@f.com",
-                text: diary,
-                date: today
-            })
-        })
+    const handleChange = (e) => {
+        const {value} = e.target;
+
+        setDiary(value);
+
+        if (timeoutId.length) {
+            timeoutId.forEach(value => clearTimeout(value));
+        }
+
+        timeoutId.push(
+            setTimeout(
+            () => {
+                fetch('/api/diary', {
+                    method: 'put',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: "k@f.com",
+                        text: value,
+                        date: today
+                    })
+                })
+        }, 3000)
+    );
+
+
     }
 
     useEffect(() => {
@@ -64,9 +79,6 @@ function Diary() {
                       cols="90" placeholder="My diary..." value={diary}
                       disabled={value.format("YYYY-MM-DD") !== today}/>
                 </div>
-            </div>
-            <div className="button-container">
-                <button type="button" className= "diaryUpdating" onClick={handleSend}>ADD</button>
             </div>
         </div>
     )
