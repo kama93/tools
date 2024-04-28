@@ -11,6 +11,34 @@
     row-gap: 20px;
 }
 
+.diary-content {
+    opacity: 0.8;
+    background-color: #FFFACD;
+    border-color: transparent;
+    border-radius: 25px;
+    width: 60vw;
+    height: 60vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.date-container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.textarea-container {
+    background-attachment: local;
+    background-image:
+            linear-gradient(to right, #FFFACD 10px, transparent 10px),
+            linear-gradient(to left, #FFFACD 10px, transparent 10px),
+            repeating-linear-gradient(#FFFACD, #FFFACD 30px, #ccc 30px, #ccc 31px, white 31px);
+    line-height: 21px;
+    padding: 2px 10px;
+    height: 80%;
+}
+
 .button-container{
     margin-top: 1rem;
     display: flex;
@@ -18,24 +46,16 @@
 }
 
 .date-element{
-    background-color: white;
+    border: none;
 }
 
 .text-diary{
-    height: 35vh;
-    width: 50vw;
-    border-radius: 25px;
+    height: 100%;
+    width: 100%;
     font-family: 'Delicious Handrawn', cursive;
     font-size: 1.5em;
-    opacity: 0.8;
-    background-attachment: local;
-    background-image:
-            linear-gradient(to right, #FFFACD 10px, transparent 10px),
-            linear-gradient(to left, #FFFACD 10px, transparent 10px),
-            repeating-linear-gradient(#FFFACD, #FFFACD 30px, #ccc 30px, #ccc 31px, white 31px);
-    line-height: 31px;
-    padding: 8px 10px;
-    border-color: transparent
+    border: none;
+    background-color: transparent;
 }
 
 .text-diary ::placeholder{
@@ -89,4 +109,14 @@
 .diaryUpdating:active {
     background: var(--color);
     color: #fff;
+}
+
+.css-1u3bzj6-MuiFormControl-root-MuiTextField-root {
+    width: 40%;
+    background-color: transparent;
+    border-radius: 25px;
+}
+
+.MuiOutlinedInput-notchedOutline {
+    border: none ! important ;
 }

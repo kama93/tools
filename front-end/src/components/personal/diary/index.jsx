@@ -1,7 +1,7 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import {LocalizationProvider} from '@mui/x-date-pickers';
+import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
 
 import './style.css';
 import dayjs from "dayjs";
@@ -48,19 +48,26 @@ function Diary() {
                 backgroundSize: "100%",
                 backgroundRepeat: "no-repeat"
             }}>
-
-            <textarea type="text" id="name" onChange={handleChange} className="text-diary" required minLength="4" cols="90" placeholder="My diary..." value={diary} disabled= {value.format("YYYY-MM-DD") !== today}/>
+            <div className = "diary-content">
+                <div className= "date-container">
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DatePicker
+                            className="date-element"
+                            value={value}
+                            onChange={(newValue) => setValue(newValue)}
+                            formatDate={(date) => date.format('MM-DD-YYYY')}
+                        />
+                    </LocalizationProvider>
+                </div>
+                <div className= "textarea-container">
+                <textarea type="text" id="name" onChange={handleChange} className="text-diary" required minLength="4"
+                      cols="90" placeholder="My diary..." value={diary}
+                      disabled={value.format("YYYY-MM-DD") !== today}/>
+                </div>
+            </div>
             <div className="button-container">
                 <button type="button" className= "diaryUpdating" onClick={handleSend}>ADD</button>
             </div>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker
-                    className="date-element"
-                    value={value}
-                    onChange={(newValue) => setValue(newValue)}
-                    formatDate={(date) => date.format('MM-DD-YYYY')}
-                />
-            </LocalizationProvider>
         </div>
     )
 }
