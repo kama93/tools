@@ -9,70 +9,83 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import ListGroup from 'react-bootstrap/ListGroup';
 
+
+import { Calendar } from "antd";
+
 import './style.css';
 
-function Calendar () {
-    const [value, setValue] = React.useState(dayjs(new Date().toJSON().slice(0, 10)));
-    const [show, setShow] = useState(false);
-    const [isChange, setIsChange] = useState(false);
-    const [event, setEvent] = useState('');
-    const [currentEvents, setCurrentEvents] = useState({});
+function CalendarComponent () {
+    // const [value, setValue] = React.useState(dayjs(new Date().toJSON().slice(0, 10)));
+    // const [show, setShow] = useState(false);
+    // const [isChange, setIsChange] = useState(false);
+    // const [event, setEvent] = useState('');
+    // const [currentEvents, setCurrentEvents] = useState({});
+    //
+    // const inputRef = useRef(null);
+    //
+    // const handleClose = () => setShow(false);
+    // const updateEvent = (e) => setEvent(e.target.value);
+    //
+    // const getCalendar = () => {
+    //     fetch('/api/getCalendar/' + "k@f.com/" + value.format("YYYY-MM-DD"), {
+    //         method: 'get',
+    //         headers: { 'Content-Type': 'application/json' }
+    //     })
+    //         .then(response => response.json())
+    //         .then(response => {
+    //             setCurrentEvents(response)
+    //         })
+    // };
+    //
+    // const updateCalendar = () => {
+    //     fetch('/api/calendar', {
+    //         method: 'put',
+    //         headers: { 'Content-Type': 'application/json' },
+    //         body: JSON.stringify({
+    //             email: "k@f.com",
+    //             date: value.format("YYYY-MM-DD"),
+    //             info: event
+    //         })
+    //     })
+    //
+    //     inputRef.current.value = "";
+    //     setIsChange(!isChange);
+    // };
+    //
+    // const removeEvent = (e) => {
+    //     fetch('/api/deleteEvent', {
+    //         method: 'put',
+    //         headers: { 'Content-Type': 'application/json' },
+    //         body: JSON.stringify({
+    //             email: "k@f.com",
+    //             id: e.target.id,
+    //         })
+    //     })
+    //         .then(response => response.json())
+    //         .then(response => console.log(response))
+    //
+    //     setIsChange(!isChange);
+    // }
+    //
+    // const getDate = (e) => {
+    //     setValue(e);
+    //     setShow(true)
+    //
+    // };
+    //
+    // useEffect(() => {
+    //     getCalendar();
+    // }, [isChange, value])
 
-    const inputRef = useRef(null);
-
-    const handleClose = () => setShow(false);
-    const updateEvent = (e) => setEvent(e.target.value);
-
-    const getCalendar = () => {
-        fetch('/api/getCalendar/' + "k@f.com/" + value.format("YYYY-MM-DD"), {
-            method: 'get',
-            headers: { 'Content-Type': 'application/json' }
-        })
-            .then(response => response.json())
-            .then(response => {
-                setCurrentEvents(response)
-            })
+    const [value, setValue] = useState(() => dayjs(new Date().toJSON().slice(0, 10)));
+    const [selectedValue, setSelectedValue] = useState(() => dayjs('2017-01-25'));
+    const onSelect = (newValue) => {
+        setValue(newValue);
+        setSelectedValue(newValue);
     };
-
-    const updateCalendar = () => {
-        fetch('/api/calendar', {
-            method: 'put',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                email: "k@f.com",
-                date: value.format("YYYY-MM-DD"),
-                info: event
-            })
-        })
-
-        inputRef.current.value = "";
-        setIsChange(!isChange);
+    const onPanelChange = (newValue) => {
+        setValue(newValue);
     };
-
-    const removeEvent = (e) => {
-        fetch('/api/deleteEvent', {
-            method: 'put',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                email: "k@f.com",
-                id: e.target.id,
-            })
-        })
-            .then(response => response.json())
-            .then(response => console.log(response))
-
-        setIsChange(!isChange);
-    }
-
-    const getDate = (e) => {
-        setValue(e);
-        setShow(true)
-
-    };
-
-    useEffect(() => {
-        getCalendar();
-    }, [isChange, value])
 
     return (
         <div
@@ -85,40 +98,46 @@ function Calendar () {
             }}>
 
             <div className="data-container">
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DateCalendar
-                        value={value}
-                        onChange={getDate}
-                        dayOfWeekFormatter={(day) => `${day}.`}
-                        slotProps={{ textField: { fullWidth: true } }}
-                    />
-                </LocalizationProvider>
+                {/*<LocalizationProvider dateAdapter={AdapterDayjs}>*/}
+                {/*    <DateCalendar*/}
+                {/*        value={value}*/}
+                {/*        onChange={getDate}*/}
+                {/*        dayOfWeekFormatter={(day) => `${day}.`}*/}
+                {/*        slotProps={{ textField: { fullWidth: true } }}*/}
+                {/*    />*/}
+                {/*</LocalizationProvider>*/}
+                <Calendar
+                    value={value}
+                    onSelect={onSelect}
+                    onPanelChange={onPanelChange}
+                    fullscreen={false}
+                />
             </div>
 
-            <Modal
-                show={show}
-                onHide={handleClose}
-                backdrop="static"
-                keyboard={false}
-            >
-                <Modal.Header closeButton>
-                    <Modal.Title>{value.format("YYYY-MM-DD")}</Modal.Title>
-                </Modal.Header>
-                {/*<Modal.Body>*/}
-                {/*    {currentEvents.length > 0 && currentEvents.map((item) =>*/}
-                {/*    <ListGroup.Item key={item.id} id = {item.id} action onClick={removeEvent}>*/}
-                {/*        {item.information}*/}
-                {/*    </ListGroup.Item>*/}
-                {/*    )}*/}
-                {/*</Modal.Body>*/}
-                <Form.Control className="input-event" size="sm" type="text" placeholder="Event" ref={inputRef} onChange={updateEvent}/>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>Close</Button>
-                    <Button variant="primary" onClick={updateCalendar}>Add</Button>
-                </Modal.Footer>
-            </Modal>
+            {/*<Modal*/}
+            {/*    show={show}*/}
+            {/*    onHide={handleClose}*/}
+            {/*    backdrop="static"*/}
+            {/*    keyboard={false}*/}
+            {/*>*/}
+            {/*    <Modal.Header closeButton>*/}
+            {/*        <Modal.Title>{value.format("YYYY-MM-DD")}</Modal.Title>*/}
+            {/*    </Modal.Header>*/}
+            {/*    /!*<Modal.Body>*!/*/}
+            {/*    /!*    {currentEvents.length > 0 && currentEvents.map((item) =>*!/*/}
+            {/*    /!*    <ListGroup.Item key={item.id} id = {item.id} action onClick={removeEvent}>*!/*/}
+            {/*    /!*        {item.information}*!/*/}
+            {/*    /!*    </ListGroup.Item>*!/*/}
+            {/*    /!*    )}*!/*/}
+            {/*    /!*</Modal.Body>*!/*/}
+            {/*    <Form.Control className="input-event" size="sm" type="text" placeholder="Event" ref={inputRef} onChange={updateEvent}/>*/}
+            {/*    <Modal.Footer>*/}
+            {/*        <Button variant="secondary" onClick={handleClose}>Close</Button>*/}
+            {/*        <Button variant="primary" onClick={updateCalendar}>Add</Button>*/}
+            {/*    </Modal.Footer>*/}
+            {/*</Modal>*/}
         </div>
     )
 }
 
-export default Calendar
+export default CalendarComponent

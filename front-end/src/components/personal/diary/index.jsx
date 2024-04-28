@@ -1,12 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import {DatePicker} from '@mui/x-date-pickers/DatePicker';
 import {LocalizationProvider} from '@mui/x-date-pickers';
 import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
 
 import './style.css';
 import dayjs from "dayjs";
 
-// zapisz co jakis czas, bez guzika
 function Diary() {
     const today = new Date().toJSON().split("T")[0];
     let [diary, setDiary] = useState('');
@@ -23,8 +22,7 @@ function Diary() {
             timeoutId.forEach(value => clearTimeout(value));
         }
 
-        timeoutId.push(
-            setTimeout(
+        const currentTimeOut = setTimeout(
             () => {
                 fetch('/api/diary', {
                     method: 'put',
@@ -35,10 +33,9 @@ function Diary() {
                         date: today
                     })
                 })
-        }, 3000)
-    );
+            }, 3000)
 
-
+        timeoutId.push(currentTimeOut);
     }
 
     useEffect(() => {

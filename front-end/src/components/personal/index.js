@@ -7,7 +7,7 @@ import Tab from 'react-bootstrap/Tab';
 
 import Diary from './diary';
 import Movie from './movie';
-import Calendar from './calendar';
+import CalendarComponent from './calendar';
 import List from './list';
 
 function Personal () {
@@ -35,7 +35,7 @@ function Personal () {
                 <Col sm={9}>
                     <Tab.Content>
                         <Tab.Pane eventKey="first">
-                            <Calendar/>
+                            <CalendarComponent/>
                         </Tab.Pane>
                         <Tab.Pane eventKey="second">
                             <Diary/>

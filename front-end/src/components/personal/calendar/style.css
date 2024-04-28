@@ -14,6 +14,8 @@
 
 }
 
-.dairy-container {
-    height: 100vh;
+.data-container {
+    width: 70vw;
+    opacity: 0.9;
+    border-radius: 20px;
 }
