@@ -175,7 +175,7 @@ app.put('/api/deleteEvent', (req, res) => {
         .where('id', '=', id)
         .del()
         .then(result => res.status(200).json('Event removed'))
-        .catch(err => res.status(400).json('issue with removing event'))
+        .catch(err => res.status(400).json(`issue with removing event ${err}`))
 })
 
 // put calories in database
