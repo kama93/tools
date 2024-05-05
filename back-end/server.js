@@ -154,16 +154,17 @@ app.get('/api/bmi/:email', (req, res) => {
 
 // put calories in database
 app.put('/api/calendar', (req, res) => {
-    const { email, date,  info} = req.body;
+    const { email, date, time,  info} = req.body;
     db.from('calendar')
         .then(db_res => {
             db('calendar').insert({
                 email: email,
                 save_date: date,
+                save_time: time,
                 information: info
             })
                 .then(result => res.status(200).json('Event added'))
-                .catch(err => res.status(400).json('issue with adding event'))
+                .catch(err => res.status(400).json(`issue with adding event${err}`))
         })
 })
 
@@ -210,7 +211,7 @@ app.put('/api/diary', (req, res) => {
 
 app.get('/api/getCalendar/:email/:date', (req, res) => {
         const { email, date } = req.params;
-        db.select('information', 'id')
+        db.select('information', 'id', 'save_time')
             .from('calendar')
             .where('email', '=', email)
             .where('save_date', '=', date)

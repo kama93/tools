@@ -6,9 +6,9 @@ import dayjs from 'dayjs';
 // import Button from 'react-bootstrap/Button';
 // import Modal from 'react-bootstrap/Modal';
 // import Form from 'react-bootstrap/Form';
-// import ListGroup from 'react-bootstrap/ListGroup';
+import ListGroup from 'react-bootstrap/ListGroup';
 
-import { Modal, TimePicker } from 'antd';
+import { Modal, TimePicker, Timeline } from 'antd';
 import moment from 'moment';
 
 
@@ -16,12 +16,12 @@ import {Calendar} from "antd";
 
 import './style.css';
 
-// moze uzyc timeline
-// zeby server zapisywal godzine i nadpisywal jesli ta sama godzina- ale musi tez dawac komunikat jesli juz zajeta godzina
+// zserver i nadpisywal jesli ta sama godzina- plus style na timeline
 
 
 function CalendarComponent () {
     const [value, setValue] = useState(() => dayjs(new Date().toJSON().slice(0, 10)));
+    const [time, setTime] = useState();
     const [show, setShow] = useState(false);
     const [event, setEvent] = useState('');
     let [currentEvents, setCurrentEvents] = useState({});
@@ -30,7 +30,8 @@ function CalendarComponent () {
     const format = 'HH:mm';
 
     const handleClose = () => setShow(false);
-    const updateEvent = (e) => setEvent(e.target.value)
+    const updateEvent = (e) => setEvent(e.target.value);
+    const updateTime = (time, timeString) => setTime(timeString);
 
     const getCalendar = () => {
         fetch('/api/getCalendar/' + "k@f.com/" + value.format("YYYY-MM-DD"), {
@@ -38,7 +39,7 @@ function CalendarComponent () {
             headers: { 'Content-Type': 'application/json' }
         })
             .then(response => response.json())
-            .then(response => setCurrentEvents(currentEvents = response));
+            .then(response => setCurrentEvents(currentEvents = response))
     };
 
     const updateCalendar = () => {
@@ -48,6 +49,7 @@ function CalendarComponent () {
             body: JSON.stringify({
                 email: "k@f.com",
                 date: value.format("YYYY-MM-DD"),
+                time,
                 info: event
             })
         })
@@ -104,13 +106,13 @@ function CalendarComponent () {
                 wrapClassName="vertical-center-modal"
             >
                 <hr/>
-                {/*{currentEvents.length > 0 && currentEvents.map((item) =>*/}
-                {/*        <ListGroup.Item key={item.id} id = {item.id} action>*/}
-                {/*            {item.information}*/}
-                {/*            <CloseOutlined onClick={() => removeEvent(item.id)} style={{fontSize: '15px', color: 'red'}}/>*/}
-                {/*        </ListGroup.Item>*/}
-                {/*        )}*/}
-                <TimePicker defaultValue={moment('12:00', format)} format={format} />
+                {currentEvents.length > 0 && currentEvents.map((item) =>
+                        <ListGroup.Item key={item.id} id = {item.id} action>
+                            {item.save_time} {item.information}
+                            <CloseOutlined onClick={() => removeEvent(item.id)} style={{fontSize: '15px', color: 'red'}}/>
+                        </ListGroup.Item>
+                )}
+                <TimePicker format={format} onChange={updateTime}/>
                 <input className="popup-input" type="text" id="event" size="30" onChange={updateEvent} ref={inputRef}/>
             </Modal>
 
