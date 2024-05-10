@@ -3,20 +3,14 @@ import {CloseOutlined} from '@ant-design/icons';
 
 import dayjs from 'dayjs';
 
-// import Button from 'react-bootstrap/Button';
-// import Modal from 'react-bootstrap/Modal';
-// import Form from 'react-bootstrap/Form';
 import ListGroup from 'react-bootstrap/ListGroup';
 
-import { Modal, TimePicker, Timeline } from 'antd';
-import moment from 'moment';
-
-
-import {Calendar} from "antd";
+import {Calendar, Modal, TimePicker} from 'antd';
 
 import './style.css';
 
 // zserver i nadpisywal jesli ta sama godzina- plus style na timeline
+// nie mozna dodac zdarzenia w przeszlosci
 
 
 function CalendarComponent () {
@@ -29,7 +23,6 @@ function CalendarComponent () {
     const inputRef = useRef(null);
     const format = 'HH:mm';
 
-    const handleClose = () => setShow(false);
     const updateEvent = (e) => setEvent(e.target.value);
     const updateTime = (time, timeString) => setTime(timeString);
 
@@ -42,8 +35,8 @@ function CalendarComponent () {
             .then(response => setCurrentEvents(currentEvents = response))
     };
 
-    const updateCalendar = () => {
-        fetch('/api/calendar', {
+    const updateCalendar = async () => {
+        await fetch('/api/calendar', {
             method: 'put',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -55,10 +48,11 @@ function CalendarComponent () {
         })
 
         inputRef.current.value = "";
+        getCalendar();
     };
 
-    const removeEvent = (id) => {
-        fetch('/api/deleteEvent', {
+    const removeEvent = async (id) => {
+        await fetch('/api/deleteEvent', {
             method: 'put',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -67,6 +61,8 @@ function CalendarComponent () {
             })
         })
             .then(response => response.json());
+
+        getCalendar();
     }
 
 
@@ -107,33 +103,15 @@ function CalendarComponent () {
             >
                 <hr/>
                 {currentEvents.length > 0 && currentEvents.map((item) =>
-                        <ListGroup.Item key={item.id} id = {item.id} action>
-                            {item.save_time} {item.information}
+                    <ListGroup.Item key={item.id} id={item.id} action className="listTimes">
+                        <p>{item.save_time}</p>
+                        <p>{item.information}</p>
                             <CloseOutlined onClick={() => removeEvent(item.id)} style={{fontSize: '15px', color: 'red'}}/>
                         </ListGroup.Item>
                 )}
                 <TimePicker format={format} onChange={updateTime}/>
                 <input className="popup-input" type="text" id="event" size="30" onChange={updateEvent} ref={inputRef}/>
             </Modal>
-
-                {/*<Modal*/}
-                {/*    show={show}*/}
-                {/*    onHide={handleClose}*/}
-                {/*    backdrop="static"*/}
-                {/*    keyboard={false}*/}
-                {/*>*/}
-                {/*    <Modal.Header closeButton>*/}
-                {/*        <Modal.Title>{value.format("YYYY-MM-DD")}</Modal.Title>*/}
-                {/*    </Modal.Header>*/}
-                {/*    <Modal.Body>*/}
-                {/*
-                {/*    </Modal.Body>*/}
-                {/*    <Form.Control className="input-event" size="sm" type="text" placeholder="Event" ref={inputRef} onChange={updateEvent}/>*/}
-                {/*    <Modal.Footer>*/}
-                {/*        <Button variant="secondary" onClick={handleClose}>Close</Button>*/}
-                {/*        <Button variant="primary" onClick={updateCalendar}>Add</Button>*/}
-                {/*    </Modal.Footer>*/}
-                {/*</Modal>*/}
         </div>
     )
 }
