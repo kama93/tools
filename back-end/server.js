@@ -216,9 +216,7 @@ app.get('/api/getCalendar/:email/:date', (req, res) => {
             .where('email', '=', email)
             .where('save_date', '=', date)
             .then(user => res.status(200).json(user))
-            .catch(err => {
-                res.status(400).json('error getting calendar events')
-            })
+            .catch(err => {res.status(400).json(`error getting calendar events${err}`)})
     }
 )
 
