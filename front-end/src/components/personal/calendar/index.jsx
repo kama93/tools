@@ -8,8 +8,8 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import {Calendar, Modal, TimePicker} from 'antd';
 
 import './style.css';
-import {forEach} from "react-bootstrap/ElementChildren";
 
+// jutro poprawic date compare
 // zserver i nadpisywal jesli ta sama godzina- plus style na timeline
 // nie mozna dodac zdarzenia w przeszlosci
 
@@ -23,7 +23,7 @@ function CalendarComponent () {
 
     const inputRef = useRef(null);
     const format = 'HH:mm';
-    const currentDay = dayjs(new Date().toJSON().slice(0, 10)).format("YYYY-MM-DD");
+    const currentDay = dayjs(new Date().toJSON().slice(0, 10));
     const regExp = /(\d{1,2})\:(\d{1,2})\:(\d{1,2})/;
     const currentTime = `${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`;
 
@@ -133,16 +133,16 @@ function CalendarComponent () {
             >
                 <hr/>
                 {currentEvents.length > 0 && currentEvents.map((item) =>
-                    <ListGroup.Item key={item.id} id={item.id} action className="listTimes" style={{opacity: value.format("YYYY-MM-DD") === currentDay && parseInt(item.save_time.replace(regExp, "$1$2$3")) > parseInt(currentTime.replace(regExp, "$1$2$3")) ? 1 : 0.5}}>
+                    <ListGroup.Item key={item.id} id={item.id} action className="listTimes" style={{opacity: value.format("YYYY-MM-DD") >= currentDay.format("YYYY-MM-DD") && parseInt(item.save_time.replace(regExp, "$1$2$3")) > parseInt(currentTime.replace(regExp, "$1$2$3")) ? 1 : 0.5}}>
                         <p>{item.save_time.substring(0, 5)}</p>
                         <p>{item.information}</p>
-                        {value.format("YYYY-MM-DD") === currentDay &&
+                        {value.format("YYYY-MM-DD") === currentDay.format("YYYY-MM-DD") &&
                             parseInt(item.save_time.replace(regExp, "$1$2$3")) > parseInt(currentTime.replace(regExp, "$1$2$3")) &&
                             <CloseOutlined onClick={() => removeEvent(item.id)} style={{fontSize: '15px', color: 'red'}}/>}
                         </ListGroup.Item>
                 )}
-                <TimePicker format={format} onChange={updateTime}/>
-                <input className="popup-input" type="text" id="event" size="30" onChange={updateEvent} ref={inputRef}/>
+                {value.format("YYYY-MM-DD") >= currentDay.format("YYYY-MM-DD") && <TimePicker format={format} onChange={updateTime}/>}
+                {value.format("YYYY-MM-DD") >= currentDay.format("YYYY-MM-DD") && <input className="popup-input" type="text" id="event" size="30" onChange={updateEvent} ref={inputRef}/>}
             </Modal>
         </div>
     )
