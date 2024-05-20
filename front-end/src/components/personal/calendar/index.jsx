@@ -104,6 +104,14 @@ function CalendarComponent () {
 
     }
 
+    const timeCheck = (date, time = null) => {
+        if(currentDay.format("YYYY-MM-DD") === date.format("YYYY-MM-DD") && (currentTime <= time || time === null)) return true;
+
+        return currentDay.format("YYYY-MM-DD") < date.format("YYYY-MM-DD");
+
+
+    }
+
 
     return (
         <div
@@ -133,16 +141,15 @@ function CalendarComponent () {
             >
                 <hr/>
                 {currentEvents.length > 0 && currentEvents.map((item) =>
-                    <ListGroup.Item key={item.id} id={item.id} action className="listTimes" style={{opacity: value.format("YYYY-MM-DD") >= currentDay.format("YYYY-MM-DD") && parseInt(item.save_time.replace(regExp, "$1$2$3")) > parseInt(currentTime.replace(regExp, "$1$2$3")) ? 1 : 0.5}}>
+                    <ListGroup.Item key={item.id} id={item.id} action className="listTimes" style={{opacity:  timeCheck(value, item.save_time) ? 1 : 0.5}}>
                         <p>{item.save_time.substring(0, 5)}</p>
                         <p>{item.information}</p>
-                        {value.format("YYYY-MM-DD") === currentDay.format("YYYY-MM-DD") &&
-                            parseInt(item.save_time.replace(regExp, "$1$2$3")) > parseInt(currentTime.replace(regExp, "$1$2$3")) &&
+                        {timeCheck(value, item.save_time) &&
                             <CloseOutlined onClick={() => removeEvent(item.id)} style={{fontSize: '15px', color: 'red'}}/>}
                         </ListGroup.Item>
                 )}
-                {value.format("YYYY-MM-DD") >= currentDay.format("YYYY-MM-DD") && <TimePicker format={format} onChange={updateTime}/>}
-                {value.format("YYYY-MM-DD") >= currentDay.format("YYYY-MM-DD") && <input className="popup-input" type="text" id="event" size="30" onChange={updateEvent} ref={inputRef}/>}
+                {timeCheck(value) && <TimePicker format={format} onChange={updateTime}/>}
+                {timeCheck(value) && <input className="popup-input" type="text" id="event" size="30" onChange={updateEvent} ref={inputRef}/>}
             </Modal>
         </div>
     )
