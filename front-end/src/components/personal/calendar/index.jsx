@@ -9,9 +9,7 @@ import {Calendar, Modal, TimePicker} from 'antd';
 
 import './style.css';
 
-// jutro poprawic date compare
-// zserver i nadpisywal jesli ta sama godzina- plus style na timeline
-// nie mozna dodac zdarzenia w przeszlosci
+// zserver i nadpisywal jesli ta sama godzina
 
 
 function CalendarComponent () {
@@ -20,12 +18,29 @@ function CalendarComponent () {
     const [show, setShow] = useState(false);
     const [event, setEvent] = useState('');
     let [currentEvents, setCurrentEvents] = useState([]);
+    const [monthData, setMonthData] = useState([]);
 
     const inputRef = useRef(null);
     const format = 'HH:mm';
     const currentDay = dayjs(new Date().toJSON().slice(0, 10));
-    const regExp = /(\d{1,2})\:(\d{1,2})\:(\d{1,2})/;
     const currentTime = `${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`;
+    const currentMonth = [];
+
+    const retriveCurrentMonthData = async () => {
+        const currentMonthDate = `${new Date().getFullYear()}-${new Date().getMonth()+1}`
+        for (let i = 1; i <= 31; ++i) {
+            await fetch('/api/getCalendar/' + "k@f.com/" + `${currentMonthDate}-${i}`, {
+                    method: 'get',
+                    headers: { 'Content-Type': 'application/json' }
+                })
+                    .then(response => response.json())
+                    .then(response => {currentMonth.push(response)})
+
+            if(i === 31) {
+                setMonthData(currentMonth)
+            }
+        }
+    }
 
     const updateEvent = (e) => setEvent(e.target.value);
     const updateTime = (time, timeString) => setTime(timeString);
@@ -36,9 +51,7 @@ function CalendarComponent () {
             headers: { 'Content-Type': 'application/json' }
         })
             .then(response => response.json())
-            .then(response => {
-                setCurrentEvents(currentEvents = response);
-            })
+            .then(response => {setCurrentEvents(currentEvents = response);})
     };
 
     const updateCalendar = async () => {
@@ -82,27 +95,27 @@ function CalendarComponent () {
     };
 
     function dateCellRender(value) {
-        fetch('/api/getCalendar/' + "k@f.com/" + value.format("YYYY-MM-DD"), {
-            method: 'get',
-            headers: { 'Content-Type': 'application/json' }
-        })
-            .then(response => response.json())
-            .then(response => {
-                return (
-                    <ul className="events">
-                        {
-                            response.map((item, index) => (
-                                <li key={index}>
-                                    <span className={'event-normal'}>●</span>
-                                    {item.information}
-                                </li>
-                            ))
-                        }
-                    </ul>
-                );
-            });
+        const dayOfMonth = value.date();
 
+        if (monthData[(dayOfMonth + 1)] && monthData[(dayOfMonth + 1)].length > 0) {
+            return (
+                <ul className="events">
+                    {
+                        monthData[(dayOfMonth + 1)].map((item, index) => (
+                            <li key={index}>
+                                <span className={'event-normal'}>●</span>
+                                {item.information}
+                            </li>
+                        ))
+                    }
+                </ul>
+            );
+        }
     }
+
+    useEffect(()=> {
+        retriveCurrentMonthData();
+    }, [])
 
     const timeCheck = (date, time = null) => {
         if(currentDay.format("YYYY-MM-DD") === date.format("YYYY-MM-DD") && (currentTime <= time || time === null)) return true;
@@ -123,14 +136,15 @@ function CalendarComponent () {
                 backgroundRepeat: "no-repeat"
             }}>
 
+            {monthData.length &&
             <div className="data-container">
                 <Calendar
                     value={value}
                     onSelect={onSelect}
-                    dateCellRender={dateCellRender}
+                    cellRender={dateCellRender}
                 />
             </div>
-
+            }
             <Modal
                 title={value.format("YYYY-MM-DD")}
                 style={{ top: 20 }}
