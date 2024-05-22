@@ -90,15 +90,21 @@ function CalendarComponent () {
         setShow(true)
     };
 
+    const timeCheck = (date, time = null) => {
+        if(currentDay.format("YYYY-MM-DD") === date.format("YYYY-MM-DD") && (currentTime <= time || time === null)) return true;
+
+        return currentDay.format("YYYY-MM-DD") < date.format("YYYY-MM-DD");
+    }
+
     function dateCellRender(value) {
-        const currentDay = monthData.filter((item) => new Date(item.save_date).getDate() === value.date());
+        const currentDay = monthData.filter((item) => new Date(item.save_date).getDate() === value.date() && new Date(item.save_date).getMonth() === value.month());
 
             return (
                 <ul className="events">
                     {
                         currentDay.map((item, index) => (
                             <li key={index}>
-                                <span className={'event-normal'}>●</span>
+                                <span style={{color: timeCheck(value, item.save_time) ? 'red' : 'grey'}}>●</span>
                                 {item.information}
                             </li>
                         ))
@@ -111,15 +117,9 @@ function CalendarComponent () {
         retriveCurrentMonthData(new Date().getMonth() + 1);
     }, [])
 
-    const timeCheck = (date, time = null) => {
-        if(currentDay.format("YYYY-MM-DD") === date.format("YYYY-MM-DD") && (currentTime <= time || time === null)) return true;
-
-        return currentDay.format("YYYY-MM-DD") < date.format("YYYY-MM-DD");
-    }
-
     const onPanelChange = (value) => {
         setIsReady(false);
-        retriveCurrentMonthData(value.month())
+        retriveCurrentMonthData(value.month() + 1)
     }
 
 
