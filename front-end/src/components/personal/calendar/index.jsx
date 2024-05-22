@@ -18,28 +18,24 @@ function CalendarComponent () {
     const [show, setShow] = useState(false);
     const [event, setEvent] = useState('');
     let [currentEvents, setCurrentEvents] = useState([]);
-    const [monthData, setMonthData] = useState([]);
+    let [monthData, setMonthData] = useState([]);
+    const [isReady, setIsReady] = useState(false);
 
     const inputRef = useRef(null);
     const format = 'HH:mm';
     const currentDay = dayjs(new Date().toJSON().slice(0, 10));
     const currentTime = `${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`;
-    const currentMonth = [];
 
     const retriveCurrentMonthData = async (month) => {
-        const currentMonthDate = `${new Date().getFullYear()}-0${month + 1}`
-        for (let i = 1; i <= 31; ++i) {
-            await fetch('/api/getCalendar/' + "k@f.com/" + `${currentMonthDate}-${i}`, {
-                    method: 'get',
-                    headers: { 'Content-Type': 'application/json' }
-                })
-                    .then(response => response.json())
-                    .then(response => {currentMonth.push(response)})
-
-            if(i === 31) {
-                setMonthData(currentMonth)
-            }
-        }
+        fetch('/api/getMonth/' + "k@f.com/" + month, {
+            method: 'get',
+            headers: { 'Content-Type': 'application/json' }
+        })
+            .then(response => response.json())
+            .then(response => {
+                setMonthData(monthData = response);
+                setIsReady(true);
+            })
     }
 
     const updateEvent = (e) => setEvent(e.target.value);
@@ -95,13 +91,12 @@ function CalendarComponent () {
     };
 
     function dateCellRender(value) {
-        const dayOfMonth = value.date();
+        const currentDay = monthData.filter((item) => new Date(item.save_date).getDate() === value.date());
 
-        if (Array.isArray(monthData[(dayOfMonth + 1)]) && monthData[(dayOfMonth + 1)].length > 0) {
             return (
                 <ul className="events">
                     {
-                        monthData[(dayOfMonth + 1)].map((item, index) => (
+                        currentDay.map((item, index) => (
                             <li key={index}>
                                 <span className={'event-normal'}>●</span>
                                 {item.information}
@@ -110,11 +105,10 @@ function CalendarComponent () {
                     }
                 </ul>
             );
-        }
     }
 
     useEffect(()=> {
-        retriveCurrentMonthData(new Date().getMonth());
+        retriveCurrentMonthData(new Date().getMonth() + 1);
     }, [])
 
     const timeCheck = (date, time = null) => {
@@ -124,7 +118,7 @@ function CalendarComponent () {
     }
 
     const onPanelChange = (value) => {
-        setMonthData([]);
+        setIsReady(false);
         retriveCurrentMonthData(value.month())
     }
 
@@ -139,7 +133,7 @@ function CalendarComponent () {
                 backgroundRepeat: "no-repeat"
             }}>
 
-            {monthData.length &&
+            {isReady &&
             <div className="data-container">
                 <Calendar
                     value={value}
@@ -149,6 +143,7 @@ function CalendarComponent () {
                 />
             </div>
             }
+
             <Modal
                 title={value.format("YYYY-MM-DD")}
                 style={{ top: 20 }}

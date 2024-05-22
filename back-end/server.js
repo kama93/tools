@@ -215,8 +215,22 @@ app.get('/api/getCalendar/:email/:date', (req, res) => {
             .from('calendar')
             .where('email', '=', email)
             .where('save_date', '=', date)
+            .orderBy('save_time')
             .then(user => res.status(200).json(user))
             .catch(err => {res.status(400).json(`error getting calendar events${err}`)})
+    }
+)
+
+app.get('/api/getMonth/:email/:month', (req, res) => {
+        const { email, month } = req.params;
+        db.select('information', 'id', 'save_time', 'save_date')
+            .from('calendar')
+            .where('email', '=', email)
+            .andWhereRaw(`EXTRACT(MONTH FROM save_date::date) = ?`, [month])
+            .orderBy('save_date')
+            .orderBy('save_time')
+            .then(user => res.status(200).json(user))
+            .catch(err => {res.status(400).json(`error getting month events${err}`)})
     }
 )
 
