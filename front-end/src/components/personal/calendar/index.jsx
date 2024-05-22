@@ -26,8 +26,8 @@ function CalendarComponent () {
     const currentTime = `${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`;
     const currentMonth = [];
 
-    const retriveCurrentMonthData = async () => {
-        const currentMonthDate = `${new Date().getFullYear()}-${new Date().getMonth()+1}`
+    const retriveCurrentMonthData = async (month) => {
+        const currentMonthDate = `${new Date().getFullYear()}-0${month + 1}`
         for (let i = 1; i <= 31; ++i) {
             await fetch('/api/getCalendar/' + "k@f.com/" + `${currentMonthDate}-${i}`, {
                     method: 'get',
@@ -97,7 +97,7 @@ function CalendarComponent () {
     function dateCellRender(value) {
         const dayOfMonth = value.date();
 
-        if (monthData[(dayOfMonth + 1)] && monthData[(dayOfMonth + 1)].length > 0) {
+        if (Array.isArray(monthData[(dayOfMonth + 1)]) && monthData[(dayOfMonth + 1)].length > 0) {
             return (
                 <ul className="events">
                     {
@@ -114,15 +114,18 @@ function CalendarComponent () {
     }
 
     useEffect(()=> {
-        retriveCurrentMonthData();
+        retriveCurrentMonthData(new Date().getMonth());
     }, [])
 
     const timeCheck = (date, time = null) => {
         if(currentDay.format("YYYY-MM-DD") === date.format("YYYY-MM-DD") && (currentTime <= time || time === null)) return true;
 
         return currentDay.format("YYYY-MM-DD") < date.format("YYYY-MM-DD");
+    }
 
-
+    const onPanelChange = (value) => {
+        setMonthData([]);
+        retriveCurrentMonthData(value.month())
     }
 
 
@@ -142,6 +145,7 @@ function CalendarComponent () {
                     value={value}
                     onSelect={onSelect}
                     cellRender={dateCellRender}
+                    onPanelChange={onPanelChange}
                 />
             </div>
             }
