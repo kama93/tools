@@ -10,6 +10,7 @@ import {Calendar, Modal, TimePicker} from 'antd';
 import './style.css';
 
 // zserver i nadpisywal jesli ta sama godzina
+// dopisac year do servera
 
 
 function CalendarComponent () {
@@ -91,7 +92,7 @@ function CalendarComponent () {
     };
 
     const timeCheck = (date, time = null) => {
-        if(currentDay.format("YYYY-MM-DD") === date.format("YYYY-MM-DD") && (currentTime <= time || time === null)) return true;
+        if(currentDay.format("YYYY-MM-DD") === date.format("YYYY-MM-DD") && (currentTime >= time || time === null)) return true;
 
         return currentDay.format("YYYY-MM-DD") < date.format("YYYY-MM-DD");
     }
@@ -103,9 +104,9 @@ function CalendarComponent () {
                 <ul className="events">
                     {
                         currentDay.map((item, index) => (
-                            <li key={index}>
-                                <span style={{color: timeCheck(value, item.save_time) ? 'red' : 'grey'}}>●</span>
-                                {item.information}
+                            <li key={index} style={{color:  timeCheck(value, item.save_time) ? 'black' : 'grey', opacity:  timeCheck(value, item.save_time) ? 1 : 0.5}}>
+                                <span style={{color: timeCheck(value, item.save_time) ? 'green' : 'grey'}}>●</span>
+                               {item.information}
                             </li>
                         ))
                     }
