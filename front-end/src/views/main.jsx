@@ -12,13 +12,13 @@ function Main() {
     const navArray = [
         {
             'image': 'https://images.unsplash.com/photo-1572949645841-094f3a9c4c94?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80',
-            'link': './calendar',
+            'link': './personal/calendar',
             'text': 'NEWS'
 
         },
         {
             'image': 'https://images.unsplash.com/photo-1579017308347-e53e0d2fc5e9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80',
-            'link': './calendar',
+            'link': './personal/calendar',
             'text': 'PERSONAL'
 
         },
@@ -73,7 +73,7 @@ function Main() {
                                  }}
                             >
                             </div>
-                            <Link to={element.link} className="link">
+                            <Link to={element.link} className="link" >
                                 <p className="image-text">{element.text}</p>
                             </Link>
                         </div>

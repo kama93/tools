@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch, Redirect } from "react-router-dom";
+import {Redirect, Route, Switch} from "react-router-dom";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -18,7 +18,10 @@ function App() {
       <Route path="/main" component={Main} />
       <Route path="/register" component={Register} />
       <Route path="/landing" component={Landing} />
-      <Route path="/calendar" component={Personal} />
+        <Route path="/personal/calendar" component={Personal}/>
+        <Route path="/personal/diary" component={Personal}/>
+        <Route path="/personal/list" component={Personal}/>
+        <Route path="/personal/movie" component={Personal}/>
       <Redirect from="/" to="/main" />
     </Switch>
   );

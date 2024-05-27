@@ -186,7 +186,6 @@ app.put('/api/diary', (req, res) => {
         .where('email', '=', email)
         .where('add_date', '=', date)
         .then(dbResult => {
-            console.log(dbResult)
             if (dbResult.length === 0) {
                 db('diary').insert({
                     email: email,
@@ -472,7 +471,6 @@ app.post('/api/joker', (req,res)=>{
     fetch(url)
         .then(result=>result.json())
         .then(result => res.status(200).json(result))
-        // .then(data=>console.log(data))
         .catch(err=> res.status(400).json('fetch movie issue'))
 })
 

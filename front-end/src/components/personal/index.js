@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 
 import Col from 'react-bootstrap/Col';
 import Nav from 'react-bootstrap/Nav';
@@ -10,40 +10,42 @@ import Movie from './movie';
 import CalendarComponent from './calendar';
 import List from './list';
 
-function Personal () {
+import { useLocation } from "react-router-dom";
 
+function Personal () {
+    const location = useLocation();
 
     return (
-        <Tab.Container id="left-tabs-example" defaultActiveKey="first">
+        <Tab.Container id="left-tabs-example" defaultActiveKey={location.pathname}>
             <Row>
                 <Col sm={3}>
                     <Nav variant="pills" className="flex-column">
                         <Nav.Item>
-                            <Nav.Link eventKey="first">CALENDAR</Nav.Link>
+                            <Nav.Link eventKey="/personal/calendar" href={"/personal/calendar"}>CALENDAR</Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
-                            <Nav.Link eventKey="second">DIARY</Nav.Link>
+                            <Nav.Link eventKey="/personal/diary" href={"/personal/diary"}>DIARY</Nav.Link>
+                            </Nav.Item>
+                        <Nav.Item>
+                            <Nav.Link eventKey="/personal/list" href={"/personal/list"}>BUCKET LIST</Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
-                            <Nav.Link eventKey="third">BUCKET LIST</Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                            <Nav.Link eventKey="fourth">MOVIE IDEA</Nav.Link>
+                            <Nav.Link eventKey="/personal/movie" href={"/personal/movie"}>MOVIE IDEA</Nav.Link>
                         </Nav.Item>
                     </Nav>
                 </Col>
                 <Col sm={9}>
                     <Tab.Content>
-                        <Tab.Pane eventKey="first">
+                        <Tab.Pane eventKey="/personal/calendar">
                             <CalendarComponent/>
                         </Tab.Pane>
-                        <Tab.Pane eventKey="second">
+                        <Tab.Pane eventKey="/personal/diary">
                             <Diary/>
                         </Tab.Pane>
-                        <Tab.Pane eventKey="third">
+                        <Tab.Pane eventKey="/personal/list">
                             <List/>
                         </Tab.Pane>
-                        <Tab.Pane eventKey="fourth">
+                        <Tab.Pane eventKey="/personal/movie">
                             <Movie/>
                         </Tab.Pane>
                     </Tab.Content>

@@ -6,6 +6,7 @@
 
 .card{
     align-items: center;
+    opacity: 0.85;
 }
 
 .card-body {

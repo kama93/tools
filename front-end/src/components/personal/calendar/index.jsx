@@ -65,6 +65,8 @@ function CalendarComponent () {
 
         inputRef.current.value = "";
         getCalendar();
+        setIsReady(false);
+        retriveCurrentMonthData(value.month() + 1)
     };
 
     const removeEvent = async (id) => {
@@ -79,6 +81,8 @@ function CalendarComponent () {
             .then(response => response.json());
 
         getCalendar();
+        setIsReady(false);
+        retriveCurrentMonthData(value.month() + 1)
     }
 
 
@@ -92,7 +96,7 @@ function CalendarComponent () {
     };
 
     const timeCheck = (date, time = null) => {
-        if(currentDay.format("YYYY-MM-DD") === date.format("YYYY-MM-DD") && (currentTime >= time || time === null)) return true;
+        if(currentDay.format("YYYY-MM-DD") === date.format("YYYY-MM-DD") && (currentTime <= time || time === null)) return true;
 
         return currentDay.format("YYYY-MM-DD") < date.format("YYYY-MM-DD");
     }
@@ -148,7 +152,7 @@ function CalendarComponent () {
             <Modal
                 title={value.format("YYYY-MM-DD")}
                 style={{ top: 20 }}
-                visible={show}
+                open={show}
                 onOk={() => updateCalendar()}
                 onCancel={() => setShow(!show)}
                 wrapClassName="vertical-center-modal"
@@ -162,7 +166,7 @@ function CalendarComponent () {
                             <CloseOutlined onClick={() => removeEvent(item.id)} style={{fontSize: '15px', color: 'red'}}/>}
                         </ListGroup.Item>
                 )}
-                {timeCheck(value) && <TimePicker format={format} onChange={updateTime}/>}
+                {timeCheck(value) && <TimePicker format={format} onChange={updateTime} needConfirm ={false}/>}
                 {timeCheck(value) && <input className="popup-input" type="text" id="event" size="30" onChange={updateEvent} ref={inputRef}/>}
             </Modal>
         </div>
