@@ -220,6 +220,18 @@ app.get('/api/getCalendar/:email/:date', (req, res) => {
     }
 )
 
+app.get('/api/checkDate/:email/:date/:time', (req, res) => {
+        const { email, date, time } = req.params;
+        db.select('information', 'id', 'save_time')
+            .from('calendar')
+            .where('email', '=', email)
+            .where('save_date', '=', date)
+            .where('save_time', '=', time)
+            .then(user => res.status(200).json(user))
+            .catch(err => {res.status(400).json(`error getting time${err}`)})
+    }
+)
+
 app.get('/api/getMonth/:email/:month/:year', (req, res) => {
         const { email, month, year } = req.params;
         db.select('information', 'id', 'save_time', 'save_date')

@@ -1,17 +1,18 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {CloseOutlined} from '@ant-design/icons';
+import {CloseOutlined, MehOutlined} from '@ant-design/icons';
 
 import dayjs from 'dayjs';
 
 import ListGroup from 'react-bootstrap/ListGroup';
 
-import {Calendar, Modal, TimePicker} from 'antd';
+import {Calendar, Modal, TimePicker, Popconfirm} from 'antd';
 
 import './style.css';
 
 // zserver i nadpisywal jesli ta sama godzina
 // naprawic autosave w dairy
 // posprzatac calendarz
+// time picker for today- zmienic range
 
 
 function CalendarComponent () {
@@ -22,6 +23,8 @@ function CalendarComponent () {
     let [currentEvents, setCurrentEvents] = useState([]);
     let [monthData, setMonthData] = useState([]);
     const [isReady, setIsReady] = useState(false);
+    const [isFree, setIsFree] = useState(true);
+    const [open, setOpen] = useState(false);
 
     const inputRef = useRef(null);
     const format = 'HH:mm';
@@ -52,7 +55,46 @@ function CalendarComponent () {
             .then(response => {setCurrentEvents(currentEvents = response);})
     };
 
+    const checkTime = async () => {
+        await fetch('/api/checkDate/' + "k@f.com/" + value.format("YYYY-MM-DD") + "/" + time + ":00", {
+            method: 'get',
+            headers: { 'Content-Type': 'application/json' }
+        })
+            .then(response => response.json())
+            .then(response => setIsFree(!response.length));
+    };
+
     const updateCalendar = async () => {
+        await checkTime();
+
+        if(!isFree) {
+            await fetch('/api/calendar', {
+                method: 'put',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: "k@f.com",
+                    date: value.format("YYYY-MM-DD"),
+                    time,
+                    info: event
+                })
+            })
+
+            inputRef.current.value = "";
+            getCalendar();
+            setIsReady(false);
+            retriveCurrentMonthData(value.month() + 1, value.year())
+        } else {
+            setOpen(true);
+        }
+
+    };
+
+    const remove = () => {
+        setOpen(false);
+    };
+
+    const confirm = async () => {
+        setOpen(false);
         await fetch('/api/calendar', {
             method: 'put',
             headers: { 'Content-Type': 'application/json' },
@@ -168,8 +210,21 @@ function CalendarComponent () {
                         </ListGroup.Item>
                 )}
                 {timeCheck(value) && <TimePicker format={format} onChange={updateTime} needConfirm ={false}/>}
-                {timeCheck(value) && <input className="popup-input" type="text" id="event" size="30" onChange={updateEvent} ref={inputRef}/>}
-            </Modal>
+                {timeCheck(value) &&
+                    <Popconfirm
+                        title="This slot is already taken."
+                        description="Do you want to save it anyway?"
+                        onConfirm={confirm}
+                        onCancel={remove}
+                        okText="Yes"
+                        cancelText="No"
+                        open={open}
+                        icon={<MehOutlined />}
+                    >
+                    <input className="popup-input" type="text" id="event" size="30" onChange={updateEvent} ref={inputRef}/>
+                    </Popconfirm>
+                }
+                </Modal>
         </div>
     )
 }
