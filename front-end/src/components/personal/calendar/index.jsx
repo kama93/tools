@@ -10,7 +10,8 @@ import {Calendar, Modal, TimePicker} from 'antd';
 import './style.css';
 
 // zserver i nadpisywal jesli ta sama godzina
-// dopisac year do servera
+// naprawic autosave w dairy
+// posprzatac calendarz
 
 
 function CalendarComponent () {
@@ -27,8 +28,8 @@ function CalendarComponent () {
     const currentDay = dayjs(new Date().toJSON().slice(0, 10));
     const currentTime = `${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`;
 
-    const retriveCurrentMonthData = async (month) => {
-        fetch('/api/getMonth/' + "k@f.com/" + month, {
+    const retriveCurrentMonthData = async (month, year) => {
+        fetch('/api/getMonth/' + "k@f.com/" + month + "/" + year, {
             method: 'get',
             headers: { 'Content-Type': 'application/json' }
         })
@@ -66,7 +67,7 @@ function CalendarComponent () {
         inputRef.current.value = "";
         getCalendar();
         setIsReady(false);
-        retriveCurrentMonthData(value.month() + 1)
+        retriveCurrentMonthData(value.month() + 1, value.year())
     };
 
     const removeEvent = async (id) => {
@@ -82,7 +83,7 @@ function CalendarComponent () {
 
         getCalendar();
         setIsReady(false);
-        retriveCurrentMonthData(value.month() + 1)
+        retriveCurrentMonthData(value.month() + 1, value.year())
     }
 
 
@@ -119,12 +120,12 @@ function CalendarComponent () {
     }
 
     useEffect(()=> {
-        retriveCurrentMonthData(new Date().getMonth() + 1);
+        retriveCurrentMonthData(new Date().getMonth() + 1, new Date().getFullYear());
     }, [])
 
     const onPanelChange = (value) => {
         setIsReady(false);
-        retriveCurrentMonthData(value.month() + 1)
+        retriveCurrentMonthData(value.month() + 1, value.year())
     }
 
 

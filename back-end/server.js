@@ -220,11 +220,12 @@ app.get('/api/getCalendar/:email/:date', (req, res) => {
     }
 )
 
-app.get('/api/getMonth/:email/:month', (req, res) => {
-        const { email, month } = req.params;
+app.get('/api/getMonth/:email/:month/:year', (req, res) => {
+        const { email, month, year } = req.params;
         db.select('information', 'id', 'save_time', 'save_date')
             .from('calendar')
             .where('email', '=', email)
+            .andWhereRaw(`EXTRACT(YEAR FROM save_date::date) = ?`, [year])
             .andWhereRaw(`EXTRACT(MONTH FROM save_date::date) = ?`, [month])
             .orderBy('save_date')
             .orderBy('save_time')
