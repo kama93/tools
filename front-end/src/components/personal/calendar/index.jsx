@@ -9,21 +9,22 @@ import {Calendar, Modal, TimePicker, Popconfirm} from 'antd';
 
 import './style.css';
 
-// zserver i nadpisywal jesli ta sama godzina
 // naprawic autosave w dairy
 // posprzatac calendarz
 // time picker for today- zmienic range
-
+// Dlaczego zapisuje mimo ze juz wziety, nie pokazuje info
+// diary pokazuje blad
 
 function CalendarComponent () {
     const [value, setValue] = useState(() => dayjs(new Date().toJSON().slice(0, 10)));
-    const [time, setTime] = useState();
+    const [time, setTime] = useState(null);
+    const [placeholder, setPlaceholder] = useState([]);
     const [show, setShow] = useState(false);
     const [event, setEvent] = useState('');
     let [currentEvents, setCurrentEvents] = useState([]);
     let [monthData, setMonthData] = useState([]);
     const [isReady, setIsReady] = useState(false);
-    const [isFree, setIsFree] = useState(true);
+    let [isFree, setIsFree] = useState();
     const [open, setOpen] = useState(false);
 
     const inputRef = useRef(null);
@@ -44,7 +45,10 @@ function CalendarComponent () {
     }
 
     const updateEvent = (e) => setEvent(e.target.value);
-    const updateTime = (time, timeString) => setTime(timeString);
+    const updateTime = (time, timeString) => {
+        setTime(timeString);
+        setPlaceholder(time);
+    }
 
     const getCalendar = () => {
         fetch('/api/getCalendar/' + "k@f.com/" + value.format("YYYY-MM-DD"), {
@@ -61,13 +65,13 @@ function CalendarComponent () {
             headers: { 'Content-Type': 'application/json' }
         })
             .then(response => response.json())
-            .then(response => setIsFree(!response.length));
+            .then(response => setIsFree(isFree = !response.length));
     };
 
     const updateCalendar = async () => {
         await checkTime();
 
-        if(!isFree) {
+        if(isFree) {
             await fetch('/api/calendar', {
                 method: 'put',
                 headers: { 'Content-Type': 'application/json' },
@@ -80,6 +84,7 @@ function CalendarComponent () {
             })
 
             inputRef.current.value = "";
+            setPlaceholder([]);
             getCalendar();
             setIsReady(false);
             retriveCurrentMonthData(value.month() + 1, value.year())
@@ -91,6 +96,8 @@ function CalendarComponent () {
 
     const remove = () => {
         setOpen(false);
+        inputRef.current.value = "";
+        setPlaceholder([]);
     };
 
     const confirm = async () => {
@@ -107,6 +114,7 @@ function CalendarComponent () {
         })
 
         inputRef.current.value = "";
+        setPlaceholder([]);
         getCalendar();
         setIsReady(false);
         retriveCurrentMonthData(value.month() + 1, value.year())
@@ -209,7 +217,13 @@ function CalendarComponent () {
                             <CloseOutlined onClick={() => removeEvent(item.id)} style={{fontSize: '15px', color: 'red'}}/>}
                         </ListGroup.Item>
                 )}
-                {timeCheck(value) && <TimePicker format={format} onChange={updateTime} needConfirm ={false}/>}
+                {timeCheck(value) &&
+                    <TimePicker
+                        format={format}
+                        onChange={updateTime}
+                        needConfirm ={false}
+                        value={placeholder}
+                    />}
                 {timeCheck(value) &&
                     <Popconfirm
                         title="This slot is already taken."
